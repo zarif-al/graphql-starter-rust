@@ -33,7 +33,7 @@ This application can be deployed on any machine that can run a docker image. You
 - Create an account in [docker.io](https://hub.docker.com/)
 - Create a repository in your docker account.
   - Please note: If you create your repository as `private` you will have to create a `token` from your account settings page.
-- Build the image using `docker build -t <docker-user-name>/<project-name>`
+- Build the image using `docker build -t <docker-user-name>/<project-name> .`
 - Push the image into docker hub using `docker push <docker-user-name>/<project-name>`
   - Please make sure in docker hub that your image has been pushed.
 - Provide the docker image link `<docker-user-name>/<project-name>` to your platform and it should get deployed.
