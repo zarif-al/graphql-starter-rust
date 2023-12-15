@@ -8,15 +8,24 @@ use axum::{
 use std::net::SocketAddr;
 use tracing::info;
 
+mod env;
 mod general_response;
 mod graphql;
 mod health_check;
 mod user;
 
+use env::get_env;
 use graphql::{mutation::MutationRoot, query::QueryRoot};
 
 async fn graphiql() -> impl IntoResponse {
-    response::Html(GraphiQLSource::build().endpoint("/").finish())
+    let env = get_env();
+
+    response::Html(
+        GraphiQLSource::build()
+            .endpoint("/")
+            .title(env.app_name.as_str())
+            .finish(),
+    )
 }
 
 #[tokio::main]
@@ -29,10 +38,16 @@ async fn main() {
 
     let app = Router::new().route("/", get(graphiql).post_service(GraphQL::new(schema)));
 
-    info!("Application started!. Listening on port  4000");
+    // Get env
+    let env = get_env();
+
+    info!(
+        "Application Name: {}. Listening on port {}",
+        env.app_name, env.port
+    );
 
     // setup server address
-    let addr = SocketAddr::from(([127, 0, 0, 1], 4000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], env.port));
     // serve it with hyper on designated port
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
