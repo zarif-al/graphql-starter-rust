@@ -31,7 +31,7 @@ This application can be deployed on any machine that can run a docker image. You
 - Create a repository in your docker account.
   - Please note: If you create your repository as `private` you will have to create a `token` from your account settings page.
 - Build the image using `docker build -t <docker-user-name>/<project-name> .`
-  >If your cloud uses a different CPU architecture than your development machine (e.g: you are on a Mac M1 and your cloud provider is amd64), you'll want to build the image for that platform, e.g.: `docker build --platform=linux/amd64 -t myapp .`
+  >If your cloud uses a different CPU architecture than your development machine (e.g: you are on a Mac M1 and your cloud provider is amd64), you'll want to build the image for that platform, e.g: `docker build --platform=linux/amd64 -t myapp .`
 - Push the image into docker hub using `docker push <docker-user-name>/<project-name>`
   - Please make sure in docker hub that your image has been pushed.
 - Provide the docker image link `<docker-user-name>/<project-name>` to your platform and it should get deployed.
