@@ -47,7 +47,7 @@ async fn main() {
     );
 
     // setup server address
-    let addr = SocketAddr::from(([127, 0, 0, 1], env.port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
     // serve it with hyper on designated port
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
