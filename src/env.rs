@@ -1,3 +1,4 @@
+/// This module will read and return the values from the env file.
 extern crate dotenv;
 
 use dotenv::dotenv;
