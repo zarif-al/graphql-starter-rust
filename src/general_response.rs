@@ -1,3 +1,4 @@
+use async_graphql::SimpleObject;
 use serde::Serialize;
 
 ///  This struct should be used in situations where the application
@@ -6,7 +7,7 @@ use serde::Serialize;
 /// Lets say the app failed to create a user so it can't send the
 /// new user as a response. In that case it should return a general response
 /// containing the error message.
-#[derive(Serialize)]
+#[derive(Serialize, SimpleObject)]
 pub struct GeneralResponse {
     pub code: u8,
     pub message: Option<String>,
