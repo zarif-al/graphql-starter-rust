@@ -19,3 +19,24 @@ pub fn create_user(input: CreateUser) -> Result<User> {
         username: input.username,
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::user::create::create_user;
+
+    use super::CreateUser;
+
+    #[test]
+    fn test_create_user() {
+        let username = String::from("Test User");
+
+        let input = CreateUser {
+            username: username.clone(),
+        };
+
+        let result = create_user(input).expect("User should be successfully created.");
+
+        assert_eq!(result.id, 1337);
+        assert_eq!(result.username, username);
+    }
+}
