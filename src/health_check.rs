@@ -1,11 +1,23 @@
 use async_graphql::Json;
+use sea_orm::Database;
 
-use crate::general_response::GeneralResponse;
+use crate::{env::get_env, general_response::GeneralResponse};
 
-pub fn health_check() -> Json<GeneralResponse> {
-    Json(GeneralResponse {
-        code: 200,
-        error: None,
-        message: Some("All OK!".to_string()),
-    })
+pub async fn health_check() -> Json<GeneralResponse> {
+    let connection_string = get_env().db_url;
+
+    let db = Database::connect(connection_string).await;
+
+    match db {
+        Ok(_) => Json(GeneralResponse {
+            code: 200,
+            error: None,
+            message: Some("Database Connection Established!".to_string()),
+        }),
+        Err(e) => Json(GeneralResponse {
+            code: 500,
+            error: Some(e.to_string()),
+            message: None,
+        }),
+    }
 }
