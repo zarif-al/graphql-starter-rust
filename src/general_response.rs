@@ -9,7 +9,7 @@ use serde::Serialize;
 /// containing the error message.
 #[derive(Serialize, SimpleObject)]
 pub struct GeneralResponse {
-    pub code: u8,
+    pub code: i32,
     pub message: Option<String>,
     pub error: Option<String>,
 }
