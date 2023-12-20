@@ -7,6 +7,7 @@ use std::env;
 pub struct Env {
     pub app_name: String,
     pub port: u16,
+    pub db_url: String,
 }
 
 pub fn get_env() -> Env {
@@ -19,5 +20,12 @@ pub fn get_env() -> Env {
         .parse()
         .expect("PORT is expected to be parsable as u32");
 
-    Env { app_name, port }
+    let db_url = env::var("DB_URL")
+        .expect("The .env should have a database connection string provided as `DB_URL`.");
+
+    Env {
+        app_name,
+        port,
+        db_url,
+    }
 }
