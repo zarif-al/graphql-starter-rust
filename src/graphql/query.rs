@@ -12,6 +12,6 @@ pub struct QueryRoot;
 #[Object]
 impl QueryRoot {
     pub async fn health_check(&self) -> Json<GeneralResponse> {
-        health_check()
+        health_check().await
     }
 }
