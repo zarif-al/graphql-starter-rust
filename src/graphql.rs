@@ -2,3 +2,4 @@
 /// The files in the module control the graphql server.
 pub mod mutation;
 pub mod query;
+pub mod schema;
