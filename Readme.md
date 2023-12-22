@@ -7,6 +7,7 @@ This template makes use of the following crates:
 - [Axum](https://docs.rs/axum/latest/axum/)
 - [Async-GraphQL](https://async-graphql.github.io/async-graphql/en/introduction.html)
 - [Tracing](https://crates.io/crates/tracing)
+- [SeaORM](https://www.sea-ql.org/SeaORM/docs/index/)
 
 #### Notes
 - We cannot use the latest version of `axum` (0.7) as `async-graphql` does not yet support it ([PR-1431](https://github.com/async-graphql/async-graphql/pull/1431)).
@@ -17,11 +18,37 @@ In this project we should try to encapsulate all unique logic in its own modules
 
 > All modules should be documented.
 
+## Database Interaction
+
+We are using `SeaORM` as our tool to communicate with the database. This orm supports the following databases:
+- MySQL
+- PostgreSQL
+- SQLite
+
+The project is setup to work with `PostgreSQL` database but you can adjust it for any of the other options with minimal change to the code.
+
+
 ## Logging
 
-Logging in this project is done with the `tracing` crate. It currently only configured to print to the stadard output.
+Logging in this project is done with the `tracing` crate. I have configured tracing to only print the `app` crate logs.
+
+It will not print any logs from `sea-orm`.
+
+You can always update the `RUST_LOG` environment variable to adjust which logs get printed.
+
+Resource: [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
+
 
 ## Building and running your application
+
+### Pre-requisites
+To build and run this application you need the following:
+- A database service up and running
+- A database
+- Create an `.env` file from the `.sample.env`
+- Update the `.env` file with your database connection credentials and database name
+
+### Running
 You can run this application by using cargo or docker. For cargo you can use standard cargo commands to build and run the project.
 
 For docker you can use `docker compose up --build`.
