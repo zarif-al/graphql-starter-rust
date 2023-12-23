@@ -6,7 +6,7 @@ use async_graphql::{Object, Result};
 
 use crate::repositories::user::{
     create::{create_user, CreateUser},
-    definition::GraphQLUser,
+    GraphQLUser,
 };
 
 pub struct MutationRoot;
