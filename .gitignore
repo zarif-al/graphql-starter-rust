@@ -1,2 +1,4 @@
 /target
 .env
+.docker.env
+/migration/target
