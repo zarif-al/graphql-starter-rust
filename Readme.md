@@ -48,6 +48,16 @@ To build and run this application you need the following:
 - Create an `.env` file from the `.sample.env`
 - Update the `.env` file with your database connection credentials and database name
 
+### Migrations
+```
+sea-orm-cli migrate
+```
+
+### Generating/Updating Entities file
+```
+sea-orm-cli generate entity --database-url {db_url}/{db_name} -o src/entities
+```
+
 ### Running
 You can run this application by using cargo or docker. For cargo you can use standard cargo commands to build and run the project.
 
