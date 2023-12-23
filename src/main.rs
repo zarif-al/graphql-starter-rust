@@ -18,6 +18,8 @@ mod repositories;
 use graphql::{mutation::MutationRoot, query::QueryRoot};
 use misc::env::get_env;
 
+use crate::misc::get_db_connection;
+
 /// GraphQL Playground
 async fn graphiql() -> impl IntoResponse {
     let env = get_env();
@@ -43,20 +45,33 @@ async fn main() {
         .with_env_filter(EnvFilter::from_default_env())
         .init();
 
-    // Build graphql schema
-    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).finish();
+    // Get db connection
+    let db = get_db_connection().await;
 
-    // Build server
-    let app = Router::new().route("/", get(graphiql).post_service(GraphQL::new(schema)));
+    match db {
+        Ok(db) => {
+            // Build graphql schema
+            let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+                // Add db to graphl context
+                .data(db)
+                .finish();
 
-    // Serve
-    info!(
-        "Application Name: {}. Listening on port {}",
-        env.app_name, env.port
-    );
-    let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await
-        .expect("App failed to startup!");
+            // Build server
+            let app = Router::new().route("/", get(graphiql).post_service(GraphQL::new(schema)));
+
+            // Serve
+            info!(
+                "Application Name: {}. Listening on port {}",
+                env.app_name, env.port
+            );
+            let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
+            axum::Server::bind(&addr)
+                .serve(app.into_make_service())
+                .await
+                .expect("App failed to startup!");
+        }
+        Err(err) => {
+            panic!("{}", err.to_string());
+        }
+    }
 }
