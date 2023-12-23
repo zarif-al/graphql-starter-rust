@@ -34,7 +34,7 @@ RUN xx-apk add --no-cache musl-dev gcc
 # Build the application.
 # Leverage a cache mount to /usr/local/cargo/registry/
 # for downloaded dependencies, a cache mount to /usr/local/cargo/git/db
-# for git repository dependencies, and a cache mount to /app/target/ for 
+# for git repository dependencies, and a cache mount to /app/target/ for
 # compiled dependencies which will speed up subsequent builds.
 # Leverage a bind mount to the src directory to avoid having to copy the
 # source code into the container. Once built, copy the executable to an
@@ -79,6 +79,9 @@ USER appuser
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
+
+# Copy the .docker.env file
+COPY .docker.env /.env
 
 # Expose the port that the application listens on.
 EXPOSE 4000
