@@ -1,11 +1,8 @@
 use async_graphql::{Error, InputObject, Result};
-use sea_orm::{ActiveModelTrait, ActiveValue};
+use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 use tracing::info;
 
-use crate::{
-    entities::user::{self, Model},
-    misc::get_db_connection,
-};
+use crate::entities::user::{self, Model};
 
 #[derive(InputObject)]
 pub struct CreateUser {
@@ -13,7 +10,7 @@ pub struct CreateUser {
     last_name: String,
 }
 
-pub async fn create_user(input: CreateUser) -> Result<Model> {
+pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<Model> {
     if input.first_name.is_empty() {
         return Err(Error::new("Invalid username value"));
     }
@@ -22,8 +19,6 @@ pub async fn create_user(input: CreateUser) -> Result<Model> {
         return Err(Error::new("Invalid username value"));
     }
 
-    info!("Inserting new user to database");
-
     let new_user = user::ActiveModel {
         first_name: ActiveValue::Set(input.first_name),
         last_name: ActiveValue::Set(input.last_name),
@@ -31,16 +26,14 @@ pub async fn create_user(input: CreateUser) -> Result<Model> {
         ..Default::default()
     };
 
-    let db = get_db_connection().await;
+    let result = new_user.insert(db).await?;
 
-    match db {
-        Ok(db) => {
-            let result = new_user.insert(&db).await?;
+    info!(
+        "Inserted new user {} {}",
+        result.first_name, result.last_name
+    );
 
-            Ok(result)
-        }
-        Err(err) => Err(err.into()),
-    }
+    Ok(result)
 }
 
 // #[cfg(test)]
