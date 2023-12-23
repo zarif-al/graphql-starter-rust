@@ -24,8 +24,7 @@ impl MutationRoot {
         match db_connection {
             Ok(db) => {
                 let new_user = create_user(&db, input).await?;
-                let response: GraphQLUser = new_user.into();
-                Ok(response)
+                Ok(new_user)
             }
             Err(err) => Err(err),
         }
