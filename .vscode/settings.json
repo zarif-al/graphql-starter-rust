@@ -2,4 +2,7 @@
 	"workbench.editorAssociations": {
 		"*.md": "vscode.markdown.preview.editor"
 	},
+	"rust-analyzer.linkedProjects": [
+		"./migration/Cargo.toml"
+	],
 }
