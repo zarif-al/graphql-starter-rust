@@ -5,18 +5,20 @@ use axum::{
     routing::get,
     Router,
 };
+use dotenv::dotenv;
 use std::net::SocketAddr;
 use tracing::info;
+use tracing_subscriber::EnvFilter;
 
-mod env;
-mod general_response;
+mod entities;
 mod graphql;
-mod health_check;
-mod user;
+mod misc;
+mod repositories;
 
-use env::get_env;
 use graphql::{mutation::MutationRoot, query::QueryRoot};
+use misc::env::get_env;
 
+/// GraphQL Playground
 async fn graphiql() -> impl IntoResponse {
     let env = get_env();
 
@@ -30,25 +32,29 @@ async fn graphiql() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
-    // initialize tracing
-    tracing_subscriber::fmt::init();
+    // Load env from .env file
+    dotenv().ok();
+
+    // Get env struct
+    let env = get_env();
+
+    // Setup logger
+    tracing_subscriber::fmt()
+        .with_env_filter(EnvFilter::from_default_env())
+        .init();
 
     // Build graphql schema
     let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).finish();
 
+    // Build server
     let app = Router::new().route("/", get(graphiql).post_service(GraphQL::new(schema)));
 
-    // Get env
-    let env = get_env();
-
+    // Serve
     info!(
         "Application Name: {}. Listening on port {}",
         env.app_name, env.port
     );
-
-    // setup server address
     let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
-    // serve it with hyper on designated port
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
