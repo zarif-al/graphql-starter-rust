@@ -4,14 +4,26 @@
 /// a separate module and call those functions/methods from here.
 use async_graphql::{Json, Object};
 
-use crate::general_response::GeneralResponse;
-use crate::health_check::health_check;
+use crate::misc::{get_db_connection, responses::GeneralResponse};
 
 pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
     pub async fn health_check(&self) -> Json<GeneralResponse> {
-        health_check().await
+        let db = get_db_connection().await;
+
+        match db {
+            Ok(_) => Json(GeneralResponse {
+                code: 200,
+                error: None,
+                message: Some("Database Connection Established!".to_string()),
+            }),
+            Err(e) => Json(GeneralResponse {
+                code: 500,
+                error: Some(e.to_string()),
+                message: None,
+            }),
+        }
     }
 }
