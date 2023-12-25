@@ -14,8 +14,6 @@ pub struct CreateUser {
 }
 
 pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<GraphQLUser> {
-    println!("Called");
-
     if input.first_name.is_empty() {
         return Err(Error::new("Invalid username value"));
     }
