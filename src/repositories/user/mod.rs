@@ -1,4 +1,5 @@
 pub mod create;
+pub mod find;
 
 use crate::entities;
 use async_graphql::SimpleObject;
