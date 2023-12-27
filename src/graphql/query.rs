@@ -8,7 +8,7 @@ use sea_orm::DatabaseConnection;
 use crate::{
     misc::responses::GeneralResponse,
     repositories::user::{
-        find::{find_one_user, FindOne},
+        find::{find_user, FindUserInput},
         GraphQLUser,
     },
 };
@@ -28,13 +28,13 @@ impl QueryRoot {
     pub async fn find_user<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: FindOne,
+        input: FindUserInput,
     ) -> Result<Option<GraphQLUser>> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
         match db_connection {
             Ok(db) => {
-                let user = find_one_user(&db, input).await?;
+                let user = find_user(&db, input).await?;
 
                 match user {
                     Some(user) => Ok(Some(user)),
