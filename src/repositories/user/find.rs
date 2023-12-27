@@ -1,7 +1,9 @@
 use async_graphql::{InputObject, Result};
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::{
+    ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
+};
 
-use crate::entities::user::Entity as User;
+use crate::entities::user::{self, Entity as User};
 
 use super::GraphQLUser;
 
@@ -15,8 +17,8 @@ pub struct FindUsersInput {
     first_name: Option<String>,
     last_name: Option<String>,
     email: Option<String>,
-    first: u32,
-    after: Option<u32>,
+    first: u64,
+    after: Option<u64>,
 }
 
 pub async fn find_user(
@@ -35,5 +37,7 @@ pub async fn find_users(
     db: &DatabaseConnection,
     input: FindUsersInput,
 ) -> Result<Vec<GraphQLUser>> {
+    todo!("Impement this");
+
     Ok(vec![])
 }
