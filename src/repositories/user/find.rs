@@ -1,16 +1,13 @@
-use async_graphql::{Error, InputObject, Result};
-use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
-use tracing::info;
+use async_graphql::{InputObject, Result};
+use sea_orm::{DatabaseConnection, EntityTrait};
 
-use crate::entities::user::{self};
+use crate::entities::user::Entity as User;
 
 use super::GraphQLUser;
 
 #[derive(InputObject)]
 pub struct FindOne {
-    first_name: Option<String>,
-    last_name: Option<String>,
-    email: Option<String>,
+    email: String,
 }
 
 #[derive(InputObject)]
@@ -22,21 +19,11 @@ pub struct FindMany {
     after: Option<u32>,
 }
 
-pub async fn find_one_user(db: &DatabaseConnection, input: FindOne) -> Result<GraphQLUser> {
-    if input.first_name.is_none() && input.last_name.is_none() && input.email.is_none() {
-        return Err(Error::new("Please provide "));
+pub async fn find_one_user(db: &DatabaseConnection, input: FindOne) -> Result<Option<GraphQLUser>> {
+    let result = User::find_by_id(input.email).one(db).await?;
+
+    match result {
+        Some(user) => Ok(Some(user.into())),
+        None => Ok(None),
     }
-
-    if input.last_name.is_empty() {
-        return Err(Error::new("Invalid username value"));
-    }
-
-    let result = new_user.insert(db).await?;
-
-    info!(
-        "Inserted new user {} {}",
-        result.first_name, result.last_name
-    );
-
-    Ok(result.into())
 }
