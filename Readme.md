@@ -12,6 +12,7 @@ If you want to learn more about the project's folder/code structure you can chec
 - Create an `.env` file from the `.sample.env`.
 - Update the `.env` file with your database connection url.
 - For docker, you will want to create a `.docker.env` file.
+- Install `sea-orm-cli` with `cargo install sea-orm-cli`
 - Run the table migrations against your database with the following command in the terminal
   ```bash
   sea-orm-cli migrate
