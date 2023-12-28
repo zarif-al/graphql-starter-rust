@@ -17,6 +17,7 @@ pub struct FindUsersInput {
     first_name: Option<String>,
     last_name: Option<String>,
     email: Option<String>,
+    limit: u64,
     first: u64,
     after: Option<u64>,
 }
@@ -37,7 +38,11 @@ pub async fn find_users(
     db: &DatabaseConnection,
     input: FindUsersInput,
 ) -> Result<Vec<GraphQLUser>> {
-    todo!("Impement this");
+    let mut cursor = user::Entity::find().cursor_by(user::Column::FirstName);
 
-    Ok(vec![])
+    cursor.after(input.after.unwrap_or(0));
+
+    let results = cursor.first(input.limit).all(db).await?;
+
+    Ok(results.into_iter().map())
 }
