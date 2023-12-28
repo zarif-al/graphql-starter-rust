@@ -8,7 +8,7 @@ use sea_orm::DatabaseConnection;
 use crate::{
     misc::responses::GeneralResponse,
     repositories::user::{
-        find::{find_user, FindUserInput},
+        find::{find_user, find_users, FindUserInput, FindUsersInput},
         GraphQLUser,
     },
 };
@@ -40,6 +40,23 @@ impl QueryRoot {
                     Some(user) => Ok(Some(user)),
                     None => Ok(None),
                 }
+            }
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn find_users<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: FindUsersInput,
+    ) -> Result<Vec<GraphQLUser>> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let users = find_users(&db, input).await?;
+
+                Ok(users)
             }
             Err(err) => Err(err),
         }
