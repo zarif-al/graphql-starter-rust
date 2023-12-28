@@ -1,7 +1,5 @@
 use async_graphql::{InputObject, Result};
-use sea_orm::{
-    ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
-};
+use sea_orm::{DatabaseConnection, EntityTrait, PaginatorTrait, QueryOrder};
 
 use crate::entities::user::{self, Entity as User};
 
@@ -18,8 +16,7 @@ pub struct FindUsersInput {
     last_name: Option<String>,
     email: Option<String>,
     limit: u64,
-    first: u64,
-    after: Option<u64>,
+    page: u64,
 }
 
 pub async fn find_user(
@@ -38,11 +35,22 @@ pub async fn find_users(
     db: &DatabaseConnection,
     input: FindUsersInput,
 ) -> Result<Vec<GraphQLUser>> {
-    let mut cursor = user::Entity::find().cursor_by(user::Column::FirstName);
+    // Offset based pagination
+    let paginate = user::Entity::find()
+        .order_by_asc(user::Column::FirstName)
+        .paginate(db, input.limit);
 
-    cursor.after(input.after.unwrap_or(0));
+    let user_pages = paginate;
 
-    let results = cursor.first(input.limit).all(db).await?;
+    let users = user_pages.fetch_page(input.page).await?;
 
-    Ok(results.into_iter().map())
+    Ok(users.into_iter().map(|user| user.into()).collect())
+
+    // Cursor based pagination
+    // let mut cursor = user::Entity::find().cursor_by(user::Column::FirstName);
+    // if let Some(after) = input.after {
+    //     cursor.after(after);
+    // }
+    // let results = cursor.first(input.limit).all(db).await?;
+    // Ok(results.into_iter().map(|user| user.into()).collect())
 }
