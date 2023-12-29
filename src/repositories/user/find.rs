@@ -10,15 +10,6 @@ pub struct FindUserInput {
     email: String,
 }
 
-#[derive(InputObject)]
-pub struct FindUsersInput {
-    first_name: Option<String>,
-    last_name: Option<String>,
-    email: Option<String>,
-    limit: u64,
-    page: u64,
-}
-
 pub async fn find_user(
     db: &DatabaseConnection,
     input: FindUserInput,
@@ -29,6 +20,15 @@ pub async fn find_user(
         Some(user) => Ok(Some(user.into())),
         None => Ok(None),
     }
+}
+
+#[derive(InputObject)]
+pub struct FindUsersInput {
+    first_name: Option<String>,
+    last_name: Option<String>,
+    email: Option<String>,
+    limit: u64,
+    page: u64,
 }
 
 pub async fn find_users(
