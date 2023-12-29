@@ -6,11 +6,11 @@ use crate::entities::user::{self};
 
 use super::GraphQLUser;
 
-#[derive(InputObject)]
+#[derive(InputObject, Clone)]
 pub struct CreateUser {
-    first_name: String,
-    last_name: String,
-    email: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
 }
 
 pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<GraphQLUser> {
@@ -42,11 +42,11 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<G
 #[cfg(test)]
 mod tests {
     use super::create_user;
-    use super::CreateUser;
-    use crate::entities::user;
     use crate::entities::user::Model;
     use crate::repositories::user::GraphQLUser;
-    use chrono::Utc;
+    use crate::repositories::user::_mock::get_mock_create_user_input;
+    use crate::repositories::user::_mock::get_mock_graphql_user;
+    use crate::repositories::user::_mock::get_mock_user_model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;
     use sea_orm::{DatabaseBackend, MockDatabase};
@@ -54,28 +54,14 @@ mod tests {
     #[async_std::test]
     /// Test a successfull user creation operation
     async fn create_user_success() {
-        // Instantiate `user` properties
-        let first_name = "Test".to_string();
-        let last_name = "User".to_string();
-        let email = "test@gmail.com".to_string();
+        // Instantiate create user input
+        let create_user_input = get_mock_create_user_input();
 
         // Instantiate db user
-        let mock_db_user: Model = user::Model {
-            created_at: Utc::now().into(),
-            updated_at: Utc::now().into(),
-            first_name: first_name.clone(),
-            last_name: last_name.clone(),
-            email: email.clone(),
-        };
+        let mock_db_user: Model = get_mock_user_model(create_user_input.clone());
 
         // Instantiate expected results
-        let expected_result: GraphQLUser = GraphQLUser {
-            created_at: mock_db_user.clone().created_at.timestamp(),
-            updated_at: mock_db_user.clone().updated_at.timestamp(),
-            first_name: first_name.clone(),
-            last_name: last_name.clone(),
-            email: email.clone(),
-        };
+        let expected_result: GraphQLUser = get_mock_graphql_user(mock_db_user.clone());
 
         // Create MockDatabase with mock query results
         let db = MockDatabase::new(DatabaseBackend::Postgres)
@@ -83,16 +69,7 @@ mod tests {
             .into_connection();
 
         // Run `create_user` function
-        let result = create_user(
-            &db,
-            CreateUser {
-                first_name: first_name.clone(),
-                last_name: last_name.clone(),
-                email: email.clone(),
-            },
-        )
-        .await
-        .unwrap();
+        let result = create_user(&db, create_user_input.clone()).await.unwrap();
 
         // Check result against expected result
         assert_eq!(result.created_at, expected_result.created_at);
@@ -108,9 +85,9 @@ mod tests {
                 DatabaseBackend::Postgres,
                 r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "created_at", "updated_at", "first_name", "last_name", "email""#,
                 [
-                    first_name.clone().into(),
-                    last_name.clone().into(),
-                    email.clone().into()
+                    create_user_input.first_name.into(),
+                    create_user_input.last_name.into(),
+                    create_user_input.email.into()
                 ]
             )]
         )
@@ -119,10 +96,8 @@ mod tests {
     #[async_std::test]
     /// Test a failed user creation operation
     async fn create_user_failure() {
-        // Instantiate `user` properties
-        let first_name = "Test".to_string();
-        let last_name = "User".to_string();
-        let email = "test@gmail.com".to_string();
+        // Instantiate create user input
+        let create_user_input = get_mock_create_user_input();
 
         // Create MockDatabase with mock query results
         let db = MockDatabase::new(DatabaseBackend::Postgres)
@@ -130,15 +105,7 @@ mod tests {
             .into_connection();
 
         // Run `create_user` function
-        let result = create_user(
-            &db,
-            CreateUser {
-                first_name: first_name.clone(),
-                last_name: last_name.clone(),
-                email: email.clone(),
-            },
-        )
-        .await;
+        let result = create_user(&db, create_user_input.clone()).await;
 
         // Check if the operation results in an error
         assert!(result.is_err());
@@ -150,9 +117,9 @@ mod tests {
                 DatabaseBackend::Postgres,
                 r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "created_at", "updated_at", "first_name", "last_name", "email""#,
                 [
-                    first_name.clone().into(),
-                    last_name.clone().into(),
-                    email.clone().into()
+                    create_user_input.first_name.into(),
+                    create_user_input.last_name.into(),
+                    create_user_input.email.into()
                 ]
             )]
         )
