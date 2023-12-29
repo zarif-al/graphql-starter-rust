@@ -39,61 +39,72 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<G
     Ok(result.into())
 }
 
-// So far I have not found a reasonable testing strategy. I will resume this later.
+#[cfg(test)]
+mod tests {
+    use super::create_user;
+    use super::CreateUser;
+    use crate::entities::user;
+    use crate::entities::user::Model;
+    use crate::repositories::user::GraphQLUser;
+    use chrono::Utc;
+    use sea_orm::Transaction;
+    use sea_orm::{DatabaseBackend, MockDatabase};
 
-// #[cfg(test)]
-// mod tests {
-//     use super::create_user;
-//     use super::CreateUser;
-//     use crate::entities::user;
-//     use crate::repositories::user::GraphQLUser;
-//     use chrono::Utc;
-//     use sea_orm::DbErr;
-//     use sea_orm::{DatabaseBackend, MockDatabase};
+    #[async_std::test]
+    async fn test_create_user_successfull() {
+        // Instantiate `user` properties
+        let first_name = "Test".to_string();
+        let last_name = "User".to_string();
+        let email = "test@gmail.com".to_string();
 
-//     #[async_std::test]
-//     async fn test_create_user_successfull() {
-//         let creation_time = Utc::now();
-//         let updated_time = Utc::now();
-//         let first_name = "Test".to_string();
-//         let last_name = "User".to_string();
-//         let email = "test@email.com".to_string();
+        // Instantiate db user
+        let mock_db_user: Model = user::Model {
+            created_at: Utc::now().into(),
+            updated_at: Utc::now().into(),
+            first_name: first_name.clone(),
+            last_name: last_name.clone(),
+            email: email.clone(),
+        };
 
-//         let expected_result: GraphQLUser = GraphQLUser {
-//             created_at: creation_time.timestamp(),
-//             updated_at: updated_time.timestamp(),
-//             first_name: first_name.clone(),
-//             last_name: last_name.clone(),
-//             email: email.clone(),
-//         };
+        // Instantiate expected results
+        let expected_result: GraphQLUser = mock_db_user.clone().into();
 
-//         // Create MockDatabase with mock query results
-//         let db = MockDatabase::new(DatabaseBackend::Postgres)
-//             .append_query_results([vec![user::Model {
-//                 first_name: first_name.clone(),
-//                 last_name: last_name.clone(),
-//                 email: email.clone(),
-//                 created_at: creation_time.into(),
-//                 updated_at: updated_time.into(),
-//             }]])
-//             .into_connection();
+        // Create MockDatabase with mock query results
+        let db = MockDatabase::new(DatabaseBackend::Postgres)
+            .append_query_results([vec![mock_db_user]])
+            .into_connection();
 
-//         let result = create_user(
-//             &db,
-//             CreateUser {
-//                 first_name: first_name.clone(),
-//                 last_name: last_name.clone(),
-//                 email: email.clone(),
-//             },
-//         )
-//         .await
-//         .unwrap();
+        // Run `create_user` function
+        let result = create_user(
+            &db,
+            CreateUser {
+                first_name: first_name.clone(),
+                last_name: last_name.clone(),
+                email: email.clone(),
+            },
+        )
+        .await
+        .unwrap();
 
-//         // Check result against expected result
-//         assert_eq!(result.created_at, expected_result.created_at);
-//         assert_eq!(result.updated_at, expected_result.updated_at);
-//         assert_eq!(result.first_name, expected_result.first_name);
-//         assert_eq!(result.last_name, expected_result.last_name);
-//         assert_eq!(result.email, expected_result.email);
-//     }
-// }
+        // Check result against expected result
+        assert_eq!(result.created_at, expected_result.created_at);
+        assert_eq!(result.updated_at, expected_result.updated_at);
+        assert_eq!(result.first_name, expected_result.first_name);
+        assert_eq!(result.last_name, expected_result.last_name);
+        assert_eq!(result.email, expected_result.email);
+
+        // Check the transaction log to make sure the correct SQL operation is being run
+        assert_eq!(
+            db.into_transaction_log(),
+            [Transaction::from_sql_and_values(
+                DatabaseBackend::Postgres,
+                r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "created_at", "updated_at", "first_name", "last_name", "email""#,
+                [
+                    first_name.clone().into(),
+                    last_name.clone().into(),
+                    email.clone().into()
+                ]
+            )]
+        )
+    }
+}
