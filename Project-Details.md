@@ -30,10 +30,12 @@ Resource: [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/lat
 ## Project Crate Details
 Currently this project has two crates the `app` crate and the `migration` crate. **These are not linked as it is not necessary.**
 
-#### Migration
+### Migration Crate
 SeaORM is a schema-first approach, so we have to run migrations against our database and then generate the entity files from our database.
 
 This crate contains all the migrations that needs to be run against a database.
+
+> You will have to install `sea-orm-cli` with `cargo add sea-orm-cli`.
 
 This is initialized using `sea-orm-cli migrate init`.
 
