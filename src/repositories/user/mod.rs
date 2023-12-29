@@ -1,3 +1,5 @@
+#[cfg(test)]
+mod _mock;
 pub mod create;
 pub mod find;
 
