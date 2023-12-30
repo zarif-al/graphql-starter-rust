@@ -100,3 +100,11 @@ This module contains miscellaneous code this project needs to function such as
 - A function to return the env struct
 - A function to return a db connection
 - Re-usable structs such as a response struct.
+
+## Testing
+
+This respository has tests using a mock database.
+
+> This methodology does not mimic a real world database, the queries are not carried out as they would have been in a real database. Instead the mock database will return the mock data that you define. We are not testing the database.
+
+This methodology does let us make sure that our functions are processing the data from the database and returning them correctly.
