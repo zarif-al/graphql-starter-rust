@@ -1,41 +1,24 @@
-# Running Migrator CLI
+# Migration
 
-- Generate a new migration file
-    ```sh
-    cargo run -- generate MIGRATION_NAME
-    ```
-- Apply all pending migrations
-    ```sh
-    cargo run
-    ```
-    ```sh
-    cargo run -- up
-    ```
-- Apply first 10 pending migrations
-    ```sh
-    cargo run -- up -n 10
-    ```
-- Rollback last applied migrations
-    ```sh
-    cargo run -- down
-    ```
-- Rollback last 10 applied migrations
-    ```sh
-    cargo run -- down -n 10
-    ```
-- Drop all tables from the database, then reapply all migrations
-    ```sh
-    cargo run -- fresh
-    ```
-- Rollback all applied migrations, then reapply all migrations
-    ```sh
-    cargo run -- refresh
-    ```
-- Rollback all applied migrations
-    ```sh
-    cargo run -- reset
-    ```
-- Check the status of all migrations
-    ```sh
-    cargo run -- status
-    ```
+SeaORM is a schema-first approach, so we have to run migrations against our database and then generate the entity files from our database.
+
+This crate contains all the migrations that needs to be run against a database.
+
+> You will have to install `sea-orm-cli` with `cargo add sea-orm-cli`.
+
+This is initialized using `sea-orm-cli migrate init`.
+
+You can follow this [guide](https://www.sea-ql.org/sea-orm-tutorial/ch01-02-migration-cli.html#define-the-migrations) to create new migrations.
+
+You can run the migrations using this command `sea-orm-cli migrate`.
+
+> This is created using sea-orm docs.
+
+> You should NOT re-initialize this as it will remove all existing migrations.
+
+## Running
+To run the migrations you have to do the following:
+
+* Create a `.env` file in the `server` crate. You can follow the `Readme.md` in that crate to learn more.
+* Run `cargo run -p migration`.
+
