@@ -99,7 +99,7 @@ mod tests {
         // Instantiate create user input
         let create_user_input = get_mock_create_user_input();
 
-        // Create MockDatabase with mock query results
+        // Create MockDatabase with mock query error
         let db = MockDatabase::new(DatabaseBackend::Postgres)
             .append_query_errors(vec![DbErr::RecordNotInserted])
             .into_connection();
