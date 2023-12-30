@@ -8,7 +8,8 @@ use sea_orm::DatabaseConnection;
 use crate::{
     misc::responses::GeneralResponse,
     repositories::user::{
-        find::{find_user, find_users, FindUserInput, FindUsersInput},
+        find_many::{find_users, FindUsersInput},
+        find_one::{find_user, FindUserInput},
         GraphQLUser,
     },
 };
