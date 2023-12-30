@@ -1,7 +1,8 @@
 #[cfg(test)]
 mod _mock;
 pub mod create;
-pub mod find;
+pub mod find_many;
+pub mod find_one;
 
 use crate::entities;
 use async_graphql::SimpleObject;
