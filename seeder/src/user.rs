@@ -1,4 +1,3 @@
-use chrono::Utc;
 use fake::faker::internet::raw::SafeEmail;
 use fake::faker::name::raw::*;
 use fake::locales::*;
@@ -18,8 +17,7 @@ pub fn generate_mock_users(num: usize) -> Vec<ActiveModel> {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
-            created_at: Set(Utc::now().into()),
-            updated_at: Set(Utc::now().into()),
+            ..Default::default()
         })
     }
 
