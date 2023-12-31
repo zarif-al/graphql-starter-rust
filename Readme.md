@@ -14,7 +14,7 @@ This workspace currently has two crates:
 
 * Install postgreSQL from [here](https://www.postgresql.org/download/).
 
-* Create an `.env` file from the `.sample.env`.
+* Create a `.env` file from the `.sample.env`.
 
 * Create a postreSQL database.
 
