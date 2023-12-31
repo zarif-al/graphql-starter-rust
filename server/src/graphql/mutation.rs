@@ -5,9 +5,15 @@
 use async_graphql::{Context, Object, Result};
 use sea_orm::DatabaseConnection;
 
-use crate::repositories::user::{
-    create::{create_user, CreateUser},
-    GraphQLUser,
+use crate::repositories::{
+    post::{
+        create::{create_post, CreatePost},
+        GraphQLPost,
+    },
+    user::{
+        create::{create_user, CreateUser},
+        GraphQLUser,
+    },
 };
 
 pub struct MutationRoot;
@@ -25,6 +31,22 @@ impl MutationRoot {
             Ok(db) => {
                 let new_user = create_user(&db, input).await?;
                 Ok(new_user)
+            }
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn create_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: CreatePost,
+    ) -> Result<GraphQLPost> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let new_post = create_post(&db, input).await?;
+                Ok(new_post)
             }
             Err(err) => Err(err),
         }
