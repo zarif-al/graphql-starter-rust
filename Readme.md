@@ -12,13 +12,13 @@ This workspace currently has two crates:
 ### Pre-requisites
 * Install `Rust`. You can check it out [here](https://www.rust-lang.org/tools/install).
 
-* A postreSQL database service up and running.
+* Install postgreSQL from [here](https://www.postgresql.org/download/).
 
 * Create an `.env` file from the `.sample.env`.
 
-* A postreSQL database.
+* Create a postreSQL database.
 
-* Update the `.env` file with your database connection url.
+* Update the `.env` file with your database connection url. You can get some hints in the `.sample.env` file.
 
   > For docker, you will want to create a `.docker.env` file. You can follow the `.sample.docker.env for help`
 
