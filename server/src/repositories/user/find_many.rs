@@ -93,7 +93,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"SELECT "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" ORDER BY "user"."first_name" ASC LIMIT $1 OFFSET $2"#,
+                r#"SELECT "user"."id", "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" ORDER BY "user"."first_name" ASC LIMIT $1 OFFSET $2"#,
                 [1u64.into(), 0u64.into()]
             )]
         )
@@ -127,7 +127,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"SELECT "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" ORDER BY "user"."first_name" ASC LIMIT $1 OFFSET $2"#,
+                r#"SELECT "user"."id", "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" ORDER BY "user"."first_name" ASC LIMIT $1 OFFSET $2"#,
                 [1u64.into(), 0u64.into()]
             )]
         )
