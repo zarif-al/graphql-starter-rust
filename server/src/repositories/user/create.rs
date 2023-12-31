@@ -83,7 +83,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "created_at", "updated_at", "first_name", "last_name", "email""#,
+                r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "id", "created_at", "updated_at", "first_name", "last_name", "email""#,
                 [
                     create_user_input.first_name.into(),
                     create_user_input.last_name.into(),
@@ -115,7 +115,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "created_at", "updated_at", "first_name", "last_name", "email""#,
+                r#"INSERT INTO "user" ("first_name", "last_name", "email") VALUES ($1, $2, $3) RETURNING "id", "created_at", "updated_at", "first_name", "last_name", "email""#,
                 [
                     create_user_input.first_name.into(),
                     create_user_input.last_name.into(),
