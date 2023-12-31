@@ -82,3 +82,10 @@ I have opted to use the Mock database approach for testing. You can learn more a
 > This methodology **does not** mimic a real world database, the queries are not carried out as they would have been in a real database. Instead the mock database will return the mock data that **you define**. We are **not testing** the database.
 
 This methodology does let us make sure that our functions are processing the data from the database and returning them correctly.
+
+## Error Codes
+* **500**: `Internal server error` -> We have encountered an edge case or a complicated error.
+
+* **P100**: `Create Post: Author does not exist` -> The `user_id` provided in the mutation argument does not exist.
+
+* **P101**: `Create Post: Failed to create post` -> Failed to create a post.
