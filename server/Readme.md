@@ -20,7 +20,7 @@ Logging in this project is done with the `tracing` crate. I have configured trac
 
 It will not print any logs from `sea-orm`.
 
-You can always update the `RUST_LOG` environment variable to adjust which logs get printed.
+> You can always update the log setup to change which logs get printed.
 
 Resource: [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
 
