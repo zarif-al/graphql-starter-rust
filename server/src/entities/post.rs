@@ -3,26 +3,31 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "user")]
+#[sea_orm(table_name = "post")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
-    pub first_name: String,
-    pub last_name: String,
-    pub email: String,
+    pub user_id: i32,
+    pub content: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::post::Entity")]
-    Post,
+    #[sea_orm(
+        belongs_to = "super::user::Entity",
+        from = "Column::UserId",
+        to = "super::user::Column::Id",
+        on_update = "NoAction",
+        on_delete = "NoAction"
+    )]
+    User,
 }
 
-impl Related<super::post::Entity> for Entity {
+impl Related<super::user::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Post.def()
+        Relation::User.def()
     }
 }
 
