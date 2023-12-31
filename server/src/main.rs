@@ -8,7 +8,6 @@ use axum::{
 use dotenv::dotenv;
 use std::net::SocketAddr;
 use tracing::info;
-use tracing_subscriber::EnvFilter;
 
 mod entities;
 mod graphql;
@@ -41,9 +40,8 @@ async fn main() {
     let env = get_env();
 
     // Setup logger
-    tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
-        .init();
+    // Update the `with_env_filter()` to get more or less logs
+    tracing_subscriber::fmt().with_env_filter("server").init();
 
     // Get db connection
     let db = get_db_connection().await;

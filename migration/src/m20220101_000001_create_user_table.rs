@@ -17,6 +17,13 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(User::Table)
                     .col(
+                        ColumnDef::new(User::Id)
+                            .integer()
+                            .not_null()
+                            .auto_increment()
+                            .primary_key(),
+                    )
+                    .col(
                         ColumnDef::new(User::CreatedAt)
                             .timestamp_with_time_zone()
                             .default(Expr::current_timestamp())
@@ -30,12 +37,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(User::FirstName).string().not_null())
                     .col(ColumnDef::new(User::LastName).string().not_null())
-                    .col(
-                        ColumnDef::new(User::Email)
-                            .string()
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(User::Email).string().not_null())
                     .to_owned(),
             )
             .await
@@ -52,6 +54,8 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 pub enum User {
     Table,
+    #[iden = "id"]
+    Id,
     #[iden = "created_at"]
     CreatedAt,
     #[iden = "updated_at"]

@@ -1,7 +1,7 @@
 use async_graphql::{InputObject, Result};
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
-use crate::entities::user::Entity as User;
+use crate::entities::user::{self, Entity as User};
 
 use super::GraphQLUser;
 
@@ -10,11 +10,14 @@ pub struct FindUserInput {
     email: String,
 }
 
-pub async fn find_user(
+pub async fn find_user_by_email(
     db: &DatabaseConnection,
     input: FindUserInput,
 ) -> Result<Option<GraphQLUser>> {
-    let result = User::find_by_id(input.email).one(db).await?;
+    let result = User::find()
+        .filter(user::Column::Email.eq(input.email))
+        .one(db)
+        .await?;
 
     match result {
         Some(user) => Ok(Some(user.into())),
@@ -24,7 +27,7 @@ pub async fn find_user(
 
 #[cfg(test)]
 mod tests {
-    use super::{find_user, FindUserInput};
+    use super::{find_user_by_email, FindUserInput};
     use crate::entities::user::Model;
     use crate::repositories::user::GraphQLUser;
     use crate::repositories::user::_mock::get_mock_create_user_input;
@@ -50,7 +53,7 @@ mod tests {
             .into_connection();
 
         // Run `find_user` function
-        let result = find_user(
+        let result = find_user_by_email(
             &db,
             FindUserInput {
                 email: mock_db_user.clone().email,
@@ -72,7 +75,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"SELECT "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
+                r#"SELECT "user"."id", "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
                 [mock_db_user.email.into(), 1u64.into()]
             )]
         )
@@ -91,7 +94,7 @@ mod tests {
             .into_connection();
 
         // Run `find_user` function
-        let result = find_user(
+        let result = find_user_by_email(
             &db,
             FindUserInput {
                 email: mock_db_user.clone().email,
@@ -108,7 +111,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"SELECT "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
+                r#"SELECT "user"."id", "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
                 [mock_db_user.email.into(), 1u64.into()]
             )]
         )
@@ -127,7 +130,7 @@ mod tests {
             .into_connection();
 
         // Run `find_user` function
-        let result = find_user(
+        let result = find_user_by_email(
             &db,
             FindUserInput {
                 email: mock_db_user.clone().email,
@@ -143,7 +146,7 @@ mod tests {
             db.into_transaction_log(),
             [Transaction::from_sql_and_values(
                 DatabaseBackend::Postgres,
-                r#"SELECT "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
+                r#"SELECT "user"."id", "user"."created_at", "user"."updated_at", "user"."first_name", "user"."last_name", "user"."email" FROM "user" WHERE "user"."email" = $1 LIMIT $2"#,
                 [mock_db_user.email.into(), 1u64.into()]
             )]
         )

@@ -1,14 +1,14 @@
 /// This module will export mock structs for testing and seeding the user entity.
-use chrono::Utc;
-use fake::faker::internet::raw::SafeEmail;
-
 use crate::entities::user::Model;
 use crate::entities::user::{self};
+use chrono::Utc;
 
-use super::{create::CreateUser, GraphQLUser};
+use fake::faker::internet::raw::SafeEmail;
 use fake::faker::name::raw::*;
 use fake::locales::*;
 use fake::Fake;
+
+use super::{create::CreateUser, GraphQLUser};
 
 pub fn get_mock_create_user_input() -> CreateUser {
     CreateUser {
@@ -20,6 +20,7 @@ pub fn get_mock_create_user_input() -> CreateUser {
 
 pub fn get_mock_user_model(input: CreateUser) -> user::Model {
     user::Model {
+        id: 1,
         first_name: input.first_name,
         last_name: input.last_name,
         email: input.email,
@@ -35,5 +36,6 @@ pub fn get_mock_graphql_user(model: Model) -> GraphQLUser {
         first_name: model.first_name,
         last_name: model.last_name,
         email: model.email,
+        id: model.id,
     }
 }

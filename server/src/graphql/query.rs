@@ -9,7 +9,7 @@ use crate::{
     misc::responses::GeneralResponse,
     repositories::user::{
         find_many::{find_users, FindUsersInput},
-        find_one::{find_user, FindUserInput},
+        find_one::{find_user_by_email, FindUserInput},
         GraphQLUser,
     },
 };
@@ -26,7 +26,7 @@ impl QueryRoot {
         })
     }
 
-    pub async fn find_user<'ctx>(
+    pub async fn find_user_by_email<'ctx>(
         &self,
         ctx: &Context<'ctx>,
         input: FindUserInput,
@@ -35,7 +35,7 @@ impl QueryRoot {
 
         match db_connection {
             Ok(db) => {
-                let user = find_user(&db, input).await?;
+                let user = find_user_by_email(&db, input).await?;
 
                 match user {
                     Some(user) => Ok(Some(user)),
