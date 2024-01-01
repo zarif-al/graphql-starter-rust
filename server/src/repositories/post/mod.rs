@@ -6,8 +6,8 @@ pub mod find_many;
 pub mod find_one;
 pub mod update;
 
+use crate::entities;
 use async_graphql::SimpleObject;
-use server::entities;
 
 #[derive(SimpleObject)]
 #[cfg_attr(test, derive(PartialEq, Debug))]
