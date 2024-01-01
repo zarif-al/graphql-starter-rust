@@ -2,7 +2,7 @@
 ///
 /// Ideally you should contain the core logic of a query in
 /// a separate module and call those functions/methods from here.
-use async_graphql::{Context, Json, Object, Result};
+use async_graphql::{Context, Error, Json, Object, Result};
 use sea_orm::DatabaseConnection;
 
 use crate::{
@@ -42,7 +42,10 @@ impl QueryRoot {
                     None => Ok(None),
                 }
             }
-            Err(err) => Err(err),
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
         }
     }
 
@@ -59,7 +62,10 @@ impl QueryRoot {
 
                 Ok(users)
             }
-            Err(err) => Err(err),
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
         }
     }
 }

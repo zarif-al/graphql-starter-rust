@@ -2,7 +2,7 @@
 ///
 /// Ideally you should contain the core logic of a mutation in
 /// a separate module and call those functions/methods from here.
-use async_graphql::{Context, Object, Result};
+use async_graphql::{Context, Error, Object, Result};
 use sea_orm::DatabaseConnection;
 
 use crate::repositories::{
@@ -32,7 +32,10 @@ impl MutationRoot {
                 let new_user = create_user(&db, input).await?;
                 Ok(new_user)
             }
-            Err(err) => Err(err),
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
         }
     }
 
@@ -48,7 +51,10 @@ impl MutationRoot {
                 let new_post = create_post(&db, input).await?;
                 Ok(new_post)
             }
-            Err(err) => Err(err),
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
         }
     }
 }
