@@ -84,8 +84,14 @@ I have opted to use the Mock database approach for testing. You can learn more a
 This methodology does let us make sure that our functions are processing the data from the database and returning them correctly.
 
 ## Error Codes
+
+I think its a good idea to return custom error codes with specific meaning rather than returning error message strings.
+
+It makes it easier to handle the error and display appropriate (even multilingual) messages in the frontend.
+
+
 * **500**: `Internal server error` -> We have encountered an edge case or a complicated error.
 
-* **P100**: `Create Post: Author does not exist` -> The `user_id` provided in the mutation argument does not exist.
+* **U100**: `Create User: Invalid input` -> The input provided for user creation is invalid.
 
-* **P101**: `Create Post: Failed to create post` -> Failed to create a post.
+* **P100**: `Create Post: Author does not exist` -> The `user_id` provided in the mutation argument does not exist.
