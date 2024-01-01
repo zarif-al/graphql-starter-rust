@@ -14,12 +14,12 @@ pub async fn find_user_by_email(
     db: &DatabaseConnection,
     input: FindUserInput,
 ) -> Result<Option<GraphQLUser>> {
-    let result = User::find()
+    let user_search_result = User::find()
         .filter(user::Column::Email.eq(input.email))
         .one(db)
         .await;
 
-    match result {
+    match user_search_result {
         Ok(user_option) => match user_option {
             Some(user) => Ok(Some(user.into())),
             None => Ok(None),

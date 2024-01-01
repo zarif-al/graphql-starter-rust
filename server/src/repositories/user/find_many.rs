@@ -32,9 +32,9 @@ pub async fn find_users(
         .order_by_asc(user::Column::FirstName)
         .paginate(db, page_size);
 
-    let results = user_pages.fetch_page(input.page).await;
+    let users_search_results = user_pages.fetch_page(input.page).await;
 
-    match results {
+    match users_search_results {
         Ok(users) => Ok(users.into_iter().map(|user| user.into()).collect()),
         Err(e) => {
             tracing::error!("Source: Find many users. Message: {}", e.to_string());

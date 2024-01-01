@@ -17,12 +17,12 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePost) -> Result<G
     }
 
     // Search for user with provided user_id.
-    let user = user::Entity::find_by_id(input.user_id).one(db).await;
+    let user_search_result = user::Entity::find_by_id(input.user_id).one(db).await;
 
-    match user {
-        Ok(user) => {
+    match user_search_result {
+        Ok(user_option) => {
             // If user exists create post otherwise throw error.
-            if user.is_some() {
+            if user_option.is_some() {
                 let new_post = post::ActiveModel {
                     content: Set(input.content),
                     user_id: Set(input.user_id),
