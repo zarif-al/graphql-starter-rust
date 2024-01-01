@@ -30,7 +30,7 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<G
     match result {
         Ok(user_model) => Ok(user_model.into()),
         Err(e) => {
-            tracing::error!("Source: Create User. Message: {}", e.to_string());
+            tracing::error!("Source: Create user. Message: {}", e.to_string());
             Err(Error::new("500"))
         }
     }

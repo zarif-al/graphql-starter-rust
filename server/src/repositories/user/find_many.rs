@@ -37,7 +37,7 @@ pub async fn find_users(
     match results {
         Ok(users) => Ok(users.into_iter().map(|user| user.into()).collect()),
         Err(e) => {
-            tracing::error!("Source: Find Many Users. Message: {}", e.to_string());
+            tracing::error!("Source: Find many users. Message: {}", e.to_string());
             Err(Error::new("500"))
         }
     }
