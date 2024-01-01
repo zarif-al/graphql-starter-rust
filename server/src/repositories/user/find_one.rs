@@ -1,4 +1,4 @@
-use async_graphql::{InputObject, Result};
+use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
 use crate::entities::user::{self, Entity as User};
@@ -17,11 +17,17 @@ pub async fn find_user_by_email(
     let result = User::find()
         .filter(user::Column::Email.eq(input.email))
         .one(db)
-        .await?;
+        .await;
 
     match result {
-        Some(user) => Ok(Some(user.into())),
-        None => Ok(None),
+        Ok(user_option) => match user_option {
+            Some(user) => Ok(Some(user.into())),
+            None => Ok(None),
+        },
+        Err(e) => {
+            tracing::error!("Source: Find user by email. Message: {}", e.to_string());
+            Err(Error::new("500"))
+        }
     }
 }
 
