@@ -7,10 +7,16 @@ use sea_orm::DatabaseConnection;
 
 use crate::{
     misc::responses::GeneralResponse,
-    repositories::user::{
-        find_many::{find_users, FindUsersInput},
-        find_one::{find_user_by_email, FindUserInput},
-        GraphQLUser,
+    repositories::{
+        post::{
+            find_many::{find_posts_by_user_id, FindPostsByUserIdInput},
+            GraphQLPost,
+        },
+        user::{
+            find_many::{find_users, FindUsersInput},
+            find_one::{find_user_by_email, FindUserInput},
+            GraphQLUser,
+        },
     },
 };
 
@@ -61,6 +67,26 @@ impl QueryRoot {
                 let users = find_users(&db, input).await?;
 
                 Ok(users)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
+    pub async fn find_posts_by_user_id<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: FindPostsByUserIdInput,
+    ) -> Result<Vec<GraphQLPost>> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let posts = find_posts_by_user_id(&db, input).await?;
+
+                Ok(posts)
             }
             Err(e) => {
                 tracing::error!("Source: DB Connection. Message: {}", e.message);
