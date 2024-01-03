@@ -1,15 +1,11 @@
-/// This module will contain all the graphQL mutations.
-///
-/// Ideally you should contain the core logic of a mutation in
-/// a separate module and call those functions/methods from here.
 use async_graphql::{Context, Error, Object, Result};
 use sea_orm::DatabaseConnection;
-use server::misc::responses::GeneralResponse;
 
 use crate::repositories::{
     post::{
         create::{create_post, CreatePost},
         delete::{delete_post, DeletePost},
+        update::{update_post, UpdatePost},
         GraphQLPost,
     },
     user::{
@@ -60,22 +56,31 @@ impl MutationRoot {
         }
     }
 
-    pub async fn delete_post<'ctx>(
+    pub async fn update_post<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: DeletePost,
-    ) -> Result<GeneralResponse> {
+        input: UpdatePost,
+    ) -> Result<GraphQLPost> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
         match db_connection {
             Ok(db) => {
-                let delete_post = delete_post(&db, input).await?;
-                Ok(delete_post)
+                let result = update_post(&db, input).await?;
+                Ok(result)
             }
-            Err(e) => {
-                tracing::error!("Source: DB Connection. Message: {}", e.message);
-                Err(Error::new("500"))
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn delete_post<'ctx>(&self, ctx: &Context<'ctx>, input: DeletePost) -> Result<bool> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let result = delete_post(&db, input).await?;
+                Ok(result)
             }
+            Err(err) => Err(err),
         }
     }
 }
