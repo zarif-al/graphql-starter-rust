@@ -1,7 +1,3 @@
-/// This module contains all the graphQL queries.
-///
-/// Ideally you should contain the core logic of a query in
-/// a separate module and call those functions/methods from here.
 use async_graphql::{Context, Error, Json, Object, Result};
 use sea_orm::DatabaseConnection;
 
@@ -9,7 +5,8 @@ use crate::{
     misc::responses::GeneralResponse,
     repositories::{
         post::{
-            find_many::{find_posts_by_user_id, FindPostsByUserIdInput},
+            find_many::{find_user_posts, FindUserPostsInput},
+            find_one::{find_post, FindPostInput},
             GraphQLPost,
         },
         user::{
@@ -75,23 +72,37 @@ impl QueryRoot {
         }
     }
 
-    pub async fn find_posts_by_user_id<'ctx>(
+    pub async fn find_user_posts<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: FindPostsByUserIdInput,
+        input: FindUserPostsInput,
     ) -> Result<Vec<GraphQLPost>> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
         match db_connection {
             Ok(db) => {
-                let posts = find_posts_by_user_id(&db, input).await?;
+                let posts = find_user_posts(&db, input).await?;
 
                 Ok(posts)
             }
-            Err(e) => {
-                tracing::error!("Source: DB Connection. Message: {}", e.message);
-                Err(Error::new("500"))
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn find_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: FindPostInput,
+    ) -> Result<Option<GraphQLPost>> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let post = find_post(&db, input).await?;
+
+                Ok(post)
             }
+            Err(err) => Err(err),
         }
     }
 }
