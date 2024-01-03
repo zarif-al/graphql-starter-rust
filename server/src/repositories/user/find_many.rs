@@ -28,21 +28,20 @@ pub async fn find_users(
         page_size = input.limit
     }
 
+    // Offset based pagination
     let user_pages = user::Entity::find()
         .order_by_asc(user::Column::FirstName)
         .paginate(db, page_size);
 
-    let users_search_results = user_pages.fetch_page(input.page).await;
+    let results = user_pages.fetch_page(input.page).await;
 
-    match users_search_results {
+    match results {
         Ok(users) => Ok(users.into_iter().map(|user| user.into()).collect()),
         Err(e) => {
             tracing::error!("Source: Find many users. Message: {}", e.to_string());
             Err(Error::new("500"))
         }
     }
-
-    // Cursor based pagination. This is faster than offset based but does not allow specific page access.
 
     // let mut cursor = user::Entity::find().cursor_by(user::Column::FirstName);
     // if let Some(after) = input.after {
