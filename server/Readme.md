@@ -90,8 +90,8 @@ I think its a good idea to return custom error codes with specific meaning rathe
 It makes it easier to handle the error and display appropriate (even multilingual) messages in the frontend.
 
 
-* **500**: `Internal server error` -> We have encountered an edge case or a complicated error.
-
-* **U100**: `Create User: Invalid input` -> The input provided for user creation is invalid.
-
-* **P100**: `Create Post: Author does not exist` -> The `user_id` provided in the mutation argument does not exist.
+* **500**: `Internal server error`
+* **I100**: `Invalid Input`
+* **U100**: `User not found`
+* **P100**: `Post not found`
+* **P101**: `Post does not belong to user`
