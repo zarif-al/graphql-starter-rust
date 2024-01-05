@@ -1,4 +1,4 @@
-use crate::entities::{post, user};
+use crate::entities::{post, prelude::User};
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 
@@ -17,7 +17,7 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Res
     }
 
     // Search for user with provided user_id.
-    let user_search_result = user::Entity::find_by_id(input.user_id).one(db).await;
+    let user_search_result = User::find_by_id(input.user_id).one(db).await;
 
     match user_search_result {
         Ok(user_option) => {

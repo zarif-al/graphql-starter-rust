@@ -5,23 +5,24 @@ use fake::Fake;
 use sea_orm::DbErr;
 use sea_orm::Set;
 use sea_orm::{ActiveModelTrait, TransactionTrait};
-use server::entities::user::ActiveModel;
-use server::entities::user::{self};
+use server::entities::user::{self, ActiveModel};
 use server::misc::get_db_connection;
 
-pub fn generate_mock_users(num: usize) -> Vec<ActiveModel> {
-    let mut mock_users: Vec<ActiveModel> = vec![];
-
-    while mock_users.len() != num {
-        mock_users.push(user::ActiveModel {
+pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
+    let mut users_seed: Vec<ActiveModel> = vec![];
+    let mut i = 0;
+    while i != num {
+        users_seed.push(user::ActiveModel {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
+            id: Set((i + 1) as i32),
             ..Default::default()
-        })
+        });
+        i += 1;
     }
 
-    mock_users
+    users_seed
 }
 
 pub async fn seed_users(users: Vec<ActiveModel>) -> Result<(), DbErr> {
