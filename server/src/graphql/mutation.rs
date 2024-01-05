@@ -3,13 +3,15 @@ use sea_orm::DatabaseConnection;
 
 use crate::repositories::{
     post::{
-        create::{create_post, CreatePost},
-        delete::{delete_post, DeletePost},
-        update::{update_post, UpdatePost},
+        create::{create_post, CreatePostInput},
+        delete::{delete_post, DeletePostInput},
+        update::{update_post, UpdatePostInput},
         GraphQLPost,
     },
     user::{
-        create::{create_user, CreateUser},
+        create::{create_user, CreateUserInput},
+        delete::{delete_user, DeleteUserInput},
+        update::{update_user, UpdateUserInput},
         GraphQLUser,
     },
 };
@@ -21,7 +23,7 @@ impl MutationRoot {
     pub async fn create_user<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: CreateUser,
+        input: CreateUserInput,
     ) -> Result<GraphQLUser> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
@@ -37,10 +39,48 @@ impl MutationRoot {
         }
     }
 
+    pub async fn update_user<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: UpdateUserInput,
+    ) -> Result<GraphQLUser> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let user = update_user(&db, input).await?;
+                Ok(user)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
+    pub async fn delete_user<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: DeleteUserInput,
+    ) -> Result<bool> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let result = delete_user(&db, input).await?;
+                Ok(result)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
     pub async fn create_post<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: CreatePost,
+        input: CreatePostInput,
     ) -> Result<GraphQLPost> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
@@ -59,7 +99,7 @@ impl MutationRoot {
     pub async fn update_post<'ctx>(
         &self,
         ctx: &Context<'ctx>,
-        input: UpdatePost,
+        input: UpdatePostInput,
     ) -> Result<GraphQLPost> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
@@ -72,7 +112,11 @@ impl MutationRoot {
         }
     }
 
-    pub async fn delete_post<'ctx>(&self, ctx: &Context<'ctx>, input: DeletePost) -> Result<bool> {
+    pub async fn delete_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: DeletePostInput,
+    ) -> Result<bool> {
         let db_connection = ctx.data::<DatabaseConnection>();
 
         match db_connection {
