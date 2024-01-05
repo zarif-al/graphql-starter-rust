@@ -40,7 +40,7 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Res
                 }
             } else {
                 // Error: User does not exist
-                return Err(Error::new("P100"));
+                return Err(Error::new("U100"));
             }
         }
         Err(e) => {
