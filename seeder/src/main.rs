@@ -1,4 +1,4 @@
-use crate::user::{generate_mock_users, seed_users};
+use crate::user::{generate_users_seed, seed_users};
 use dotenv::dotenv;
 use reset_db::reset_database;
 
@@ -26,10 +26,10 @@ async fn main() {
     }
 
     // Generate mock_users
-    let mock_users = generate_mock_users(10);
+    let users = generate_users_seed(10);
 
     // Seed users
-    let seed_users_results = seed_users(mock_users).await;
+    let seed_users_results = seed_users(users).await;
     match seed_users_results {
         Ok(()) => {
             tracing::info!("Users seed complete!");
