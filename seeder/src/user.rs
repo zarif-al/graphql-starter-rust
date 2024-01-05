@@ -10,15 +10,16 @@ use server::misc::get_db_connection;
 
 pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
     let mut users_seed: Vec<ActiveModel> = vec![];
-
-    while users_seed.len() != num {
+    let mut i = 0;
+    while i != num {
         users_seed.push(user::ActiveModel {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
-            id: Set(users_seed.len() as i32),
+            id: Set((i + 1) as i32),
             ..Default::default()
-        })
+        });
+        i += 1;
     }
 
     users_seed
