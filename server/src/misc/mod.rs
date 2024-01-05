@@ -6,4 +6,3 @@ pub mod env;
 pub mod responses;
 
 pub use connection::get_db_connection;
-pub use env::get_env;
