@@ -5,8 +5,7 @@ use fake::Fake;
 use sea_orm::DbErr;
 use sea_orm::Set;
 use sea_orm::{ActiveModelTrait, TransactionTrait};
-use server::entities::user::ActiveModel;
-use server::entities::user::{self};
+use server::entities::user::{self, ActiveModel};
 use server::misc::get_db_connection;
 
 pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
@@ -17,6 +16,7 @@ pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
+            id: Set(users_seed.len() as i32),
             ..Default::default()
         })
     }
