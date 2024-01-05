@@ -7,17 +7,17 @@ use fake::faker::name::raw::*;
 use fake::locales::*;
 use fake::Fake;
 
-use super::{create::CreateUser, GraphQLUser};
+use super::{create::CreateUserInput, GraphQLUser};
 
-pub fn get_mock_create_user_input() -> CreateUser {
-    CreateUser {
+pub fn get_mock_create_user_input() -> CreateUserInput {
+    CreateUserInput {
         first_name: FirstName(EN).fake(),
         last_name: LastName(EN).fake(),
         email: SafeEmail(EN).fake(),
     }
 }
 
-pub fn get_mock_user_model(input: CreateUser) -> user::Model {
+pub fn get_mock_user_model(input: CreateUserInput) -> user::Model {
     user::Model {
         id: 1,
         first_name: input.first_name,
