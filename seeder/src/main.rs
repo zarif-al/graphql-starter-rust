@@ -1,7 +1,9 @@
 use crate::user::{generate_users_seed, seed_users};
 use dotenv::dotenv;
+use post::{generate_posts_seed, seed_posts};
 use reset_db::reset_database;
 
+mod post;
 mod reset_db;
 mod user;
 
@@ -25,17 +27,31 @@ async fn main() {
         _ => {}
     }
 
-    // Generate mock_users
+    // Generate users seed
     let users = generate_users_seed(10);
 
     // Seed users
-    let seed_users_results = seed_users(users).await;
+    let seed_users_results = seed_users(users.clone()).await;
     match seed_users_results {
         Ok(()) => {
             tracing::info!("Users seed complete!");
         }
         Err(e) => {
             tracing::error!("Failed to seed users. Error: {}", e.to_string());
+        }
+    }
+
+    // Generate posts seed
+    let posts = generate_posts_seed(10, users.clone());
+
+    // Seed posts
+    let seed_posts_results = seed_posts(posts).await;
+    match seed_posts_results {
+        Ok(()) => {
+            tracing::info!("Posts seed complete!");
+        }
+        Err(e) => {
+            tracing::error!("Failed to seed posts. Error: {}", e.to_string());
         }
     }
 }
