@@ -1,8 +1,10 @@
 #[cfg(test)]
 mod _mock;
 pub mod create;
+pub mod delete;
 pub mod find_many;
 pub mod find_one;
+pub mod update;
 
 use crate::entities;
 use async_graphql::SimpleObject;
