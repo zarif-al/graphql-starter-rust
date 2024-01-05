@@ -1,4 +1,4 @@
-use crate::entities::post;
+use crate::entities::prelude::Post;
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 
@@ -9,7 +9,7 @@ pub struct DeletePostInput {
 }
 
 pub async fn delete_post(db: &DatabaseConnection, input: DeletePostInput) -> Result<bool> {
-    let result = post::Entity::find_by_id(input.id).one(db).await;
+    let result = Post::find_by_id(input.id).one(db).await;
 
     match result {
         Ok(post_option) => match post_option {

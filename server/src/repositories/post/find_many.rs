@@ -1,9 +1,8 @@
+use crate::entities::{post, prelude::Post};
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{
     ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
 };
-
-use crate::entities::post;
 
 use super::GraphQLPost;
 
@@ -27,7 +26,7 @@ pub async fn find_user_posts(
     }
 
     // Offset based pagination
-    let post_pages = post::Entity::find()
+    let post_pages = Post::find()
         .order_by_asc(post::Column::UpdatedAt)
         .filter(post::Column::UserId.eq(input.user_id))
         .paginate(db, page_size);

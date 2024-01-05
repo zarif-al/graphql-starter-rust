@@ -1,6 +1,7 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
-use server::entities::user;
+
+use server::entities::prelude::User;
 
 #[derive(InputObject)]
 pub struct DeleteUserInput {
@@ -9,7 +10,7 @@ pub struct DeleteUserInput {
 
 pub async fn delete_user(db: &DatabaseConnection, input: DeleteUserInput) -> Result<bool> {
     // Find the user
-    let result = user::Entity::find_by_id(input.id).one(db).await;
+    let result = User::find_by_id(input.id).one(db).await;
 
     match result {
         Ok(user_option) => match user_option {

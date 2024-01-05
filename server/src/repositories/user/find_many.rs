@@ -1,7 +1,7 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, PaginatorTrait, QueryOrder};
 
-use crate::entities::user;
+use crate::entities::{prelude::User, user};
 
 use super::GraphQLUser;
 
@@ -29,7 +29,7 @@ pub async fn find_users(
     }
 
     // Offset based pagination
-    let user_pages = user::Entity::find()
+    let user_pages = User::find()
         .order_by_asc(user::Column::FirstName)
         .paginate(db, page_size);
 

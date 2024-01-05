@@ -1,7 +1,7 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 
-use crate::entities::user::{self, ActiveModel};
+use crate::entities::{prelude::User, user::ActiveModel};
 
 use super::GraphQLUser;
 
@@ -19,7 +19,7 @@ pub async fn update_user(db: &DatabaseConnection, input: UpdateUserInput) -> Res
     }
 
     // Get user model
-    let result = user::Entity::find_by_id(input.id).one(db).await;
+    let result = User::find_by_id(input.id).one(db).await;
 
     match result {
         Ok(user_option) => match user_option {

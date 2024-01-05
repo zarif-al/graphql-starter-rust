@@ -1,7 +1,7 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait};
 
-use crate::entities::post;
+use crate::entities::prelude::Post;
 
 use super::GraphQLPost;
 
@@ -14,7 +14,7 @@ pub async fn find_post(
     db: &DatabaseConnection,
     input: FindPostInput,
 ) -> Result<Option<GraphQLPost>> {
-    let results = post::Entity::find_by_id(input.id).one(db).await;
+    let results = Post::find_by_id(input.id).one(db).await;
 
     match results {
         Ok(post_option) => match post_option {
