@@ -1,4 +1,3 @@
-/// This module will export mock structs for testing and seeding the user entity.
 use crate::entities::user::Model;
 use crate::entities::user::{self};
 use chrono::Utc;

@@ -1,16 +1,19 @@
-/// This module contains all the graphQL queries.
-///
-/// Ideally you should contain the core logic of a query in
-/// a separate module and call those functions/methods from here.
-use async_graphql::{Context, Json, Object, Result};
+use async_graphql::{Context, Error, Json, Object, Result};
 use sea_orm::DatabaseConnection;
 
 use crate::{
     misc::responses::GeneralResponse,
-    repositories::user::{
-        find_many::{find_users, FindUsersInput},
-        find_one::{find_user_by_email, FindUserInput},
-        GraphQLUser,
+    repositories::{
+        post::{
+            find_many::{find_user_posts, FindUserPostsInput},
+            find_one::{find_post, FindPostInput},
+            GraphQLPost,
+        },
+        user::{
+            find_many::{find_users, FindUsersInput},
+            find_one::{find_user_by_email, FindUserInput},
+            GraphQLUser,
+        },
     },
 };
 
@@ -42,7 +45,10 @@ impl QueryRoot {
                     None => Ok(None),
                 }
             }
-            Err(err) => Err(err),
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
         }
     }
 
@@ -58,6 +64,43 @@ impl QueryRoot {
                 let users = find_users(&db, input).await?;
 
                 Ok(users)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
+    pub async fn find_user_posts<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: FindUserPostsInput,
+    ) -> Result<Vec<GraphQLPost>> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let posts = find_user_posts(&db, input).await?;
+
+                Ok(posts)
+            }
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn find_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: FindPostInput,
+    ) -> Result<Option<GraphQLPost>> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let post = find_post(&db, input).await?;
+
+                Ok(post)
             }
             Err(err) => Err(err),
         }

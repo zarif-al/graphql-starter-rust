@@ -1,6 +1,5 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
-use tracing::info;
 
 use crate::entities::user::{self};
 
@@ -14,12 +13,9 @@ pub struct CreateUser {
 }
 
 pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<GraphQLUser> {
-    if input.first_name.is_empty() {
-        return Err(Error::new("Invalid username value"));
-    }
-
-    if input.last_name.is_empty() {
-        return Err(Error::new("Invalid username value"));
+    if input.first_name.is_empty() || input.last_name.is_empty() {
+        // Error: Invalid input
+        return Err(Error::new("U100"));
     }
 
     let new_user = user::ActiveModel {
@@ -29,14 +25,15 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<G
         ..Default::default()
     };
 
-    let result = new_user.insert(db).await?;
+    let result = new_user.insert(db).await;
 
-    info!(
-        "Inserted new user {} {}",
-        result.first_name, result.last_name
-    );
-
-    Ok(result.into())
+    match result {
+        Ok(user_model) => Ok(user_model.into()),
+        Err(e) => {
+            tracing::error!("Source: Create user. Message: {}", e.to_string());
+            Err(Error::new("500"))
+        }
+    }
 }
 
 #[cfg(test)]

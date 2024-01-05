@@ -1,13 +1,17 @@
-/// This module will contain all the graphQL mutations.
-///
-/// Ideally you should contain the core logic of a mutation in
-/// a separate module and call those functions/methods from here.
-use async_graphql::{Context, Object, Result};
+use async_graphql::{Context, Error, Object, Result};
 use sea_orm::DatabaseConnection;
 
-use crate::repositories::user::{
-    create::{create_user, CreateUser},
-    GraphQLUser,
+use crate::repositories::{
+    post::{
+        create::{create_post, CreatePost},
+        delete::{delete_post, DeletePost},
+        update::{update_post, UpdatePost},
+        GraphQLPost,
+    },
+    user::{
+        create::{create_user, CreateUser},
+        GraphQLUser,
+    },
 };
 
 pub struct MutationRoot;
@@ -25,6 +29,56 @@ impl MutationRoot {
             Ok(db) => {
                 let new_user = create_user(&db, input).await?;
                 Ok(new_user)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
+    pub async fn create_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: CreatePost,
+    ) -> Result<GraphQLPost> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let new_post = create_post(&db, input).await?;
+                Ok(new_post)
+            }
+            Err(e) => {
+                tracing::error!("Source: DB Connection. Message: {}", e.message);
+                Err(Error::new("500"))
+            }
+        }
+    }
+
+    pub async fn update_post<'ctx>(
+        &self,
+        ctx: &Context<'ctx>,
+        input: UpdatePost,
+    ) -> Result<GraphQLPost> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let result = update_post(&db, input).await?;
+                Ok(result)
+            }
+            Err(err) => Err(err),
+        }
+    }
+
+    pub async fn delete_post<'ctx>(&self, ctx: &Context<'ctx>, input: DeletePost) -> Result<bool> {
+        let db_connection = ctx.data::<DatabaseConnection>();
+
+        match db_connection {
+            Ok(db) => {
+                let result = delete_post(&db, input).await?;
+                Ok(result)
             }
             Err(err) => Err(err),
         }
