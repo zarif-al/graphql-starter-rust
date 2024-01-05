@@ -5,13 +5,13 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use super::GraphQLPost;
 
 #[derive(InputObject)]
-pub struct UpdatePost {
+pub struct UpdatePostInput {
     id: i32,
     user_id: i32,
     content: String,
 }
 
-pub async fn update_post(db: &DatabaseConnection, input: UpdatePost) -> Result<GraphQLPost> {
+pub async fn update_post(db: &DatabaseConnection, input: UpdatePostInput) -> Result<GraphQLPost> {
     let result = post::Entity::find_by_id(input.id).one(db).await;
 
     match result {

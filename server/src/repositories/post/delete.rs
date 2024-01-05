@@ -3,12 +3,12 @@ use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 
 #[derive(InputObject)]
-pub struct DeletePost {
+pub struct DeletePostInput {
     id: i32,
     user_id: i32,
 }
 
-pub async fn delete_post(db: &DatabaseConnection, input: DeletePost) -> Result<bool> {
+pub async fn delete_post(db: &DatabaseConnection, input: DeletePostInput) -> Result<bool> {
     let result = post::Entity::find_by_id(input.id).one(db).await;
 
     match result {

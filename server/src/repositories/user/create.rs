@@ -6,16 +6,16 @@ use crate::entities::user::{self};
 use super::GraphQLUser;
 
 #[derive(InputObject, Clone)]
-pub struct CreateUser {
+pub struct CreateUserInput {
     pub first_name: String,
     pub last_name: String,
     pub email: String,
 }
 
-pub async fn create_user(db: &DatabaseConnection, input: CreateUser) -> Result<GraphQLUser> {
+pub async fn create_user(db: &DatabaseConnection, input: CreateUserInput) -> Result<GraphQLUser> {
     if input.first_name.is_empty() || input.last_name.is_empty() {
         // Error: Invalid input
-        return Err(Error::new("U100"));
+        return Err(Error::new("I100"));
     }
 
     let new_user = user::ActiveModel {

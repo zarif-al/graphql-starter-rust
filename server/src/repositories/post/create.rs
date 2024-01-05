@@ -5,12 +5,12 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use super::GraphQLPost;
 
 #[derive(InputObject)]
-pub struct CreatePost {
+pub struct CreatePostInput {
     user_id: i32,
     content: String,
 }
 
-pub async fn create_post(db: &DatabaseConnection, input: CreatePost) -> Result<GraphQLPost> {
+pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Result<GraphQLPost> {
     // Verify content is not empty string.
     if input.content.is_empty() {
         return Err(Error::new("Invalid post content"));
