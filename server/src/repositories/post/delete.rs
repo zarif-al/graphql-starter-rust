@@ -27,12 +27,12 @@ pub async fn delete_post(db: &DatabaseConnection, input: DeletePostInput) -> Res
                     }
                 } else {
                     // Error: Post does not belong to user
-                    Err(Error::new("P104"))
+                    Err(Error::new("P101"))
                 }
             }
             None => {
                 // Error: Post not found
-                Err(Error::new("P103"))
+                Err(Error::new("P100"))
             }
         },
         Err(e) => {
