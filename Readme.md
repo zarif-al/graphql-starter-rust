@@ -1,10 +1,13 @@
 # Rust GraphQL Starter
 
-This workspace contains the necesary crates to get a postgeSQL, graphQL backend server up and running. This is created using `async-graphl` and `sea-orm`.
-The intent of this repository is to act as a template for starting Rust based graphQL projects.
+This workspace contains the necesary crates to get a postgeSQL, graphQL backend server up and running. This is created using `async-graphl`, `sea-orm` and `axum`.
 
-This workspace currently has two crates:
+
+The goal of this repository is to act as a template for starting Rust based graphQL projects.
+
+This workspace currently has three crates, you can checkout their readme to learn more about them:
 * [**Migration**](/migration/README.md)
+* [**Seeder**](/seeder/Readme.md)
 * [**Server**](/server/Readme.md)
 
 ## Getting Started
@@ -27,6 +30,11 @@ This workspace currently has two crates:
   cargo run -p migration
   ```
 
+* Optionally you can run the seeder crate to seed some dummy data into your database.
+  ```bash
+  cargo run -p seeder
+  ```
+
 ### Running
 You can run this application by using cargo or docker.
 
@@ -35,7 +43,7 @@ For cargo, you can use `cargo run -p server`.
 For docker, you can use `docker compose up --build`.
 >NOTE: Please make sure to create the `.docker.env` mentioned above
 
-Your application will be available at http://localhost:4000.
+Your application will be available at `http://localhost:{PORT}`.
 
 
 ## Deployment
