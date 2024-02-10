@@ -62,7 +62,9 @@ async fn main() {
                 "Application Name: {}. Listening on port {}",
                 env.app_name, env.port
             );
+
             let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
+
             axum::Server::bind(&addr)
                 .serve(app.into_make_service())
                 .await
