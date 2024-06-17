@@ -7,6 +7,7 @@ use axum::{
 };
 use dotenv::dotenv;
 use std::net::SocketAddr;
+use tokio::net::TcpListener;
 use tracing::info;
 
 mod entities;
@@ -64,11 +65,18 @@ async fn main() {
             );
 
             let addr = SocketAddr::from(([0, 0, 0, 0], env.port));
+            let tcp_listener = TcpListener::bind(addr).await;
 
-            axum::Server::bind(&addr)
-                .serve(app.into_make_service())
-                .await
-                .expect("App failed to startup!");
+            match tcp_listener {
+                Ok(listener) => {
+                    axum::serve(listener, app)
+                        .await
+                        .expect("App failed to startup!");
+                }
+                Err(err) => {
+                    panic!("{}", err.to_string())
+                }
+            }
         }
         Err(err) => {
             panic!("{}", err.to_string());
