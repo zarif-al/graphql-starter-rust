@@ -45,6 +45,14 @@ For docker, you can use `docker compose up --build`.
 
 Your application will be available at `http://localhost:{PORT}`.
 
+## Logging
+
+All the crates in this project use `Tracing` and `Tracing_Subscriber` for logging purposes.
+
+SeaORM also implements `Tracing` as it's logger. This creates an issue of ending up with too many logs. To resolve this issue I make use of the `with_env_filter` option of `tracing_subsciber`, this option configures `tracing` filter the logs. I pass the name of the crate as the argument to only print the crate logs an ignore all other logs.
+
+To learn more about `with_env_filter` please see this doc [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
+
 
 ## Deployment
 This application can be deployed on any machine that can run a docker image. You can follow these steps to deploy this project:
