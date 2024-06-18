@@ -14,16 +14,6 @@ We are using `SeaORM` as our tool to communicate with the database. This orm sup
 
 The project is setup to work with `PostgreSQL` database but you can adjust it for any of the other options with minimal change to the code.
 
-## Logging
-
-Logging in this project is done with the `tracing` crate. I have configured tracing to only print the `app` crate logs.
-
-It will not print any logs from `sea-orm`.
-
-> You can always update the log setup to change which logs get printed.
-
-Resource: [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
-
 
 ## Modules
 
