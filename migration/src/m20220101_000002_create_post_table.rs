@@ -20,9 +20,8 @@ impl MigrationTrait for Migration {
                     .table(Post::Table)
                     .col(
                         ColumnDef::new(Post::Id)
-                            .integer()
+                            .char_len(36)
                             .not_null()
-                            .auto_increment()
                             .primary_key(),
                     )
                     .col(
@@ -37,7 +36,7 @@ impl MigrationTrait for Migration {
                             .default(Expr::current_timestamp())
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Post::UserId).integer().not_null())
+                    .col(ColumnDef::new(Post::UserId).char_len(36).not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-post-user_id")

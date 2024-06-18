@@ -18,9 +18,8 @@ impl MigrationTrait for Migration {
                     .table(User::Table)
                     .col(
                         ColumnDef::new(User::Id)
-                            .integer()
+                            .char_len(36)
                             .not_null()
-                            .auto_increment()
                             .primary_key(),
                     )
                     .col(
