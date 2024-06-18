@@ -2,6 +2,8 @@
 
 This crate will seed your database with some dummy data. This should be updated when you add new entities to the project. It makes use of a rust crate called `fake` to generate fake data.
 
+You can seed data within the `up` function of a migration. But I wanted to keep these two functions separate. I only want to seed in my development/staging database, not in the production database. If the seed function is part of the `up` migration then production database would also end up with seed data.
+
 A key point to understand when creating a seed function for entities, is
 that the `primary key` of a record must be defined in the seed data, even if its auto generated.
 
