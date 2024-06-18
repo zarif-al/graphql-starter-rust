@@ -7,6 +7,7 @@ use sea_orm::Set;
 use sea_orm::{ActiveModelTrait, TransactionTrait};
 use server::entities::user::{self, ActiveModel};
 use server::misc::get_db_connection;
+use tracing::info;
 
 pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
     let mut users_seed: Vec<ActiveModel> = vec![];
@@ -37,6 +38,8 @@ pub async fn seed_users(users: Vec<ActiveModel>) -> Result<(), DbErr> {
 
     // Commit it
     transaction.commit().await?;
+
+    info!("Users seed complete!");
 
     Ok(())
 }

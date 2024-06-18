@@ -4,6 +4,7 @@ use sea_orm::{ActiveModelTrait, DbErr, Set, TransactionTrait};
 use server::entities::post::{self, ActiveModel};
 use server::entities::user::ActiveModel as UserActiveModel;
 use server::misc::get_db_connection;
+use tracing::info;
 
 /**
  * This function will accept a `num` and a vector of user ids.
@@ -42,6 +43,8 @@ pub async fn seed_posts(posts: Vec<ActiveModel>) -> Result<(), DbErr> {
 
     // Commit it
     transaction.commit().await?;
+
+    info!("Posts seed complete!");
 
     Ok(())
 }
