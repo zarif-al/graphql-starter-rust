@@ -9,6 +9,14 @@ Since we use `transactions` to commit data into the database, we don't get the i
 
 When this crate is run, it refreshes the database and then proceeds to seed data into it.
 
+## Creating New Seed Function
+
+Creating a new seed function for a new entity is as simple as creating a new module with the necessary `generate` and `seed` functions.
+
+Then you can add the seed function to the `main.rs` file.
+
+> Make sure to maintain the sequence of entities being synced if the new entity has relationships to otehr tables.
+
 ## Running
 
 To run this crate make sure you have the `.env` file setup at the root crate.
