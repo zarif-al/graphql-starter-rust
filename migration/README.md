@@ -10,6 +10,18 @@ You can follow this [guide](https://www.sea-ql.org/sea-orm-tutorial/ch01-02-migr
 
 > You should NOT re-initialize this as it will remove all existing migrations.
 
+Install `sea-orm-cli`.
+
+## Creating a new migration
+
+To add new tables or make changes to existing table its best to create a new migration file. This will help you maintain an audit trail and allow you to easily rollback if something goes wrong.
+
+Here are the instructions to creating a new migration:
+
+- Use command `sea-orm-cli migrate generate new_table_name_here` to create a new migration. This command has to be run from the root crate. **Not** the migration crate.
+- Apply your necessary actions in the `up` and `down` functions. Please take care to define these functions carefully. Specially when handling special columns of an already populated table.
+- Add the newly created migration file to the `migration/src/lib.rs` file. Make sure the vector in the `migrations` function is chronological in order.
+
 ## Running
 To run the migrations you have to do the following:
 
