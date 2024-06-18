@@ -6,11 +6,7 @@ This crate contains all the migrations that needs to be run against a database.
 
 This is initialized using `sea-orm-cli migrate init`.
 
-You can follow this [guide](https://www.sea-ql.org/sea-orm-tutorial/ch01-02-migration-cli.html#define-the-migrations) to create new migrations.
-
-> You should NOT re-initialize this as it will remove all existing migrations.
-
-Install `sea-orm-cli`.
+> Since this crate is already initialized, you will not need to run this command again.
 
 ## Creating a new migration
 
