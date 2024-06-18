@@ -59,7 +59,7 @@ We call the structs `GraphQL<entity-name>`, i.e `GraphQLUser`.
 You can checkout the [user](/src/repositories/user/mod.rs) module in repositories to learn more.
 
 ## Misc
-This module contains miscellaneous code this project needs to function such as
+This module contains miscellaneous code this project needs to function such as:
 
 - A function to return the env struct
 - A function to return a db connection
