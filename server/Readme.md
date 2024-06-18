@@ -48,11 +48,11 @@ There are quite a few different solutions, for instance we can update the `entit
 
 The drawback of this approach is the `entities` file gets overwritten when we generate the entities module. This is a likely scenario as our tables will get updated as a project proceeds.
 
-My solution is to have a graphQL stuct for every entity struct. The graphQL struct can have all the properties of the entity struct and use serializable types for all properties.
+My solution is to have a GraphQL stuct for every entity struct. The GraphQL struct can have all the properties of the entity struct and use serializable types for all properties.
 
 > We also have the flexibility of inlcuding extra properties or omitting specific properties if we don't need it. We can also alter the datatype of a property.
 
-The graphql struct will also need to implement a `From trait` to convert the entity struct model to the graphql struct.
+The GraphQL struct will also need to implement a `From trait` to convert the entity struct model to the GraphQL struct.
 
 We call the structs `GraphQL<entity-name>`, i.e `GraphQLUser`.
 
