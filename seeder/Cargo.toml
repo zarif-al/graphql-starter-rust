@@ -8,14 +8,19 @@ edition = "2021"
 [dependencies]
 server = { path = "../server" }
 migration = { path = "../migration" }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.68"
-tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.117"
+tokio = { version = "1.38.0", features = ["macros"] }
 tracing = "0.1.40"
-tracing-subscriber = {version = "0.3.0", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 dotenv = "0.15.0"
-sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "mock"] }
-async-std = {version = "1.12.0", features = ["attributes"] }
-chrono = "0.4.31"
+sea-orm = { version = "0.12.15", features = [
+	"sqlx-postgres",
+	"runtime-tokio-rustls",
+	"macros",
+	"mock",
+] }
+async-std = { version = "1.12.0", features = ["attributes"] }
+chrono = "0.4.38"
 fake = "2.9.2"
-sea-orm-migration = "^0.12.0"
+sea-orm-migration = "0.12.15"
