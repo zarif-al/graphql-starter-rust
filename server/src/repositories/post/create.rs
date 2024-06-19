@@ -1,7 +1,6 @@
-use crate::entities::prelude::User;
+use crate::entities::{post, prelude::User, user};
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};
-use server::entities::{post, user};
 
 use super::GraphQLPost;
 
