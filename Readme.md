@@ -1,7 +1,8 @@
 # Rust GraphQL Starter
 
-This workspace contains the necesary crates to get a postgeSQL, graphQL backend server up and running. This is created using `async-graphl`, `sea-orm` and `axum`.
+This workspace contains the necesary crates to get a postgeSQL, graphQL backend server up and running. This is created using [async-graphl](https://github.com/async-graphql/async-graphql/blob/master/README.md), [sea-orm](https://www.sea-ql.org/SeaORM/docs/index/) and [axum](https://github.com/tokio-rs/axum/blob/main/axum/README.md).
 
+> Please go through the documentations of these frameworks to be able to work with this codebase effectively.
 
 The goal of this repository is to act as a template for starting Rust based graphQL projects.
 
