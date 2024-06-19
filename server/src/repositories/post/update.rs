@@ -1,50 +1,45 @@
-use crate::entities::post::{self, ActiveModel};
+use crate::entities::{
+    post::{self, ActiveModel},
+    prelude::User,
+    user,
+};
 use async_graphql::{Error, InputObject, Result};
-use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};
+use tracing::error;
 
 use super::GraphQLPost;
 
 #[derive(InputObject)]
 pub struct UpdatePostInput {
-    id: i32,
-    user_id: i32,
+    id: String,
+    user_email: String,
     content: String,
 }
 
 pub async fn update_post(db: &DatabaseConnection, input: UpdatePostInput) -> Result<GraphQLPost> {
-    let result = post::Entity::find_by_id(input.id).one(db).await;
+    let result = post::Entity::find()
+        .find_also_related(User)
+        .filter(user::Column::Email.eq(input.user_email))
+        .one(db)
+        .await;
 
-    match result {
-        Ok(post_option) => match post_option {
-            Some(post) => {
-                // Check if post belongs to user
-                if post.user_id == input.user_id {
-                    let mut post: ActiveModel = post.into();
+    // Extract post from result and proceed to update logic
+    if let Ok(Some((post, _))) = result {
+        let mut post: ActiveModel = post.into();
 
-                    post.content = Set(input.content);
+        post.content = Set(input.content);
 
-                    let result = post.update(db).await;
+        let result = post.update(db).await;
 
-                    match result {
-                        Ok(post) => Ok(post.into()),
-                        Err(e) => {
-                            tracing::error!("Source: Update post. Message: {}", e.to_string());
-                            Err(Error::new("500"))
-                        }
-                    }
-                } else {
-                    // Error: Post does not belong to user
-                    Err(Error::new("P101"))
-                }
+        match result {
+            Ok(post) => return Ok(post.into()),
+            Err(e) => {
+                error!("Post -> Update: {}", e.to_string());
+                return Err(Error::new("500"));
             }
-            None => {
-                // Error: Post not found
-                Err(Error::new("P100"))
-            }
-        },
-        Err(e) => {
-            tracing::error!("Source: Update post. Message: {}", e.to_string());
-            Err(Error::new("500"))
         }
     }
+
+    // Error: Post not found
+    return Err(Error::new("P100"));
 }
