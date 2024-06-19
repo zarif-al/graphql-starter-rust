@@ -1,5 +1,6 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+use tracing::error;
 
 use crate::entities::user::{self, Entity as User};
 
@@ -25,7 +26,7 @@ pub async fn find_user_by_email(
             None => Ok(None),
         },
         Err(e) => {
-            tracing::error!("Source: Find user by email. Message: {}", e.to_string());
+            error!("User -> Find One: {}", e.to_string());
             Err(Error::new("500"))
         }
     }
