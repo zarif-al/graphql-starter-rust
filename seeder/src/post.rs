@@ -5,6 +5,7 @@ use server::entities::post::{self, ActiveModel};
 use server::entities::user::ActiveModel as UserActiveModel;
 use server::misc::get_db_connection;
 use tracing::info;
+use uuid::Uuid;
 
 /**
  * This function will accept a `num` and a vector of user ids.
@@ -12,7 +13,6 @@ use tracing::info;
  */
 pub fn generate_posts_seed(num: usize, users: Vec<UserActiveModel>) -> Vec<ActiveModel> {
     let mut posts_seed: Vec<ActiveModel> = vec![];
-    let mut post_id: i32 = 0;
 
     for user in users {
         let mut i = 0;
@@ -20,11 +20,10 @@ pub fn generate_posts_seed(num: usize, users: Vec<UserActiveModel>) -> Vec<Activ
             posts_seed.push(post::ActiveModel {
                 content: Set(Paragraph(1..2).fake()),
                 user_id: Set(user.id.clone().unwrap()),
-                id: Set((post_id + 1) as i32),
+                id: Set(Uuid::new_v4().to_string()),
                 ..Default::default()
             });
             i += 1;
-            post_id += 1;
         }
     }
 

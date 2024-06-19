@@ -8,6 +8,7 @@ use sea_orm::{ActiveModelTrait, TransactionTrait};
 use server::entities::user::{self, ActiveModel};
 use server::misc::get_db_connection;
 use tracing::info;
+use uuid::Uuid;
 
 pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
     let mut users_seed: Vec<ActiveModel> = vec![];
@@ -17,7 +18,7 @@ pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
-            id: Set((i + 1) as i32),
+            id: Set(Uuid::new_v4().to_string()),
             ..Default::default()
         });
         i += 1;
