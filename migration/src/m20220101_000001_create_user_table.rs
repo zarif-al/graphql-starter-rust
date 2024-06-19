@@ -39,14 +39,37 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(User::Email).string().not_null())
                     .to_owned(),
             )
-            .await
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-user-email")
+                    .table(User::Table)
+                    .col(User::Email)
+                    .to_owned(),
+            )
+            .await?;
+
+        Ok(())
     }
 
     // Define how to rollback this migration: Drop the Bakery table.
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
+            .drop_index(
+                Index::drop()
+                    .name("idx-user-email")
+                    .table(User::Table)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
             .drop_table(Table::drop().table(User::Table).to_owned())
-            .await
+            .await?;
+
+        Ok(())
     }
 }
 
