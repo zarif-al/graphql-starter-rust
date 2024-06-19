@@ -38,9 +38,7 @@ This module is similar to a concept from NestJS.
 
 This module contains submodules for each `entity` defined in the `entities` module. For example the `User` entity will have a corresponding module in `Respositories`.
 
-The entity-submodules will contain CRUD operations for that entity.
-
-#### Note
+These submodules will contain CRUD operations for that entity.
 
 Some of the datatypes used for an entities properties are not serializable. Therefore they cannot be used by `async-graphql`.
 
@@ -53,6 +51,8 @@ My solution is to have a GraphQL stuct for every entity struct. The GraphQL stru
 > We also have the flexibility of inlcuding extra properties or omitting specific properties if we don't need it. We can also alter the datatype of a property.
 
 The GraphQL struct will also need to implement a `From trait` to convert the entity struct model to the GraphQL struct.
+
+> Please note the from trait is specified using the import path `crate::entities::...`. If you import an entity using `server::entities::...` then the `From trait` will not work.
 
 We call the structs `GraphQL<entity-name>`, i.e `GraphQLUser`.
 
