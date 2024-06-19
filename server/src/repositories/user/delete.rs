@@ -1,5 +1,5 @@
 use async_graphql::{Error, InputObject, Result};
-use sea_orm::{error, DatabaseConnection, EntityTrait, ModelTrait};
+use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 use tracing::error;
 
 use crate::entities::prelude::User;
