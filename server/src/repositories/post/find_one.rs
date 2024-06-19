@@ -7,7 +7,7 @@ use super::GraphQLPost;
 
 #[derive(InputObject)]
 pub struct FindPostInput {
-    id: i32,
+    id: String,
 }
 
 pub async fn find_post(
