@@ -23,6 +23,12 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Res
         .one(db)
         .await;
 
+    // If we get an error Error and return 500
+    if let Err(err) = user_result {
+        error!("Post -> Create: {}", err.to_string());
+        return Err(Error::new("500"));
+    }
+
     // Proceed with post creation logic if user is found
     if let Ok(Some(user)) = user_result {
         let new_post = post::ActiveModel {
@@ -44,6 +50,8 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Res
         }
     }
 
-    // Error: User does not exist
+    // If the Ok() and Err() blocks don't get triggerd then
+    // we can safely assume the user does not exist and return a user
+    // not found
     return Err(Error::new("U100"));
 }

@@ -23,6 +23,12 @@ pub async fn update_post(db: &DatabaseConnection, input: UpdatePostInput) -> Res
         .one(db)
         .await;
 
+    // If we get an error return 500
+    if let Err(err) = result {
+        error!("Post -> Update: {}", err.to_string());
+        return Err(Error::new("500"));
+    }
+
     // Extract post from result and proceed to update logic
     if let Ok(Some((post, _))) = result {
         let mut post: ActiveModel = post.into();
@@ -40,6 +46,7 @@ pub async fn update_post(db: &DatabaseConnection, input: UpdatePostInput) -> Res
         }
     }
 
-    // Error: Post not found
+    // If the Err() and Ok() block did not get triggered
+    // then we can safely assume the post was not found.
     return Err(Error::new("P100"));
 }
