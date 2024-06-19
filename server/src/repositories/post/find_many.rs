@@ -1,4 +1,4 @@
-use crate::entities::{post, prelude::Post};
+use crate::entities::{post, prelude::Post, prelude::User, user};
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{
     ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
@@ -8,7 +8,7 @@ use super::GraphQLPost;
 
 #[derive(InputObject)]
 pub struct FindUserPostsInput {
-    user_id: i32,
+    user_email: String,
     limit: u64,
     page: u64,
 }
@@ -28,13 +28,14 @@ pub async fn find_user_posts(
     // Offset based pagination
     let post_pages = Post::find()
         .order_by_asc(post::Column::UpdatedAt)
-        .filter(post::Column::UserId.eq(input.user_id))
+        .find_also_related(User)
+        .filter(user::Column::Email.eq(input.user_email))
         .paginate(db, page_size);
 
     let results = post_pages.fetch_page(input.page).await;
 
     match results {
-        Ok(posts) => Ok(posts.into_iter().map(|post| post.into()).collect()),
+        Ok(posts) => Ok(posts.into_iter().map(|(post, _)| post.into()).collect()),
         Err(e) => {
             tracing::error!("Source: Find user posts. Message: {}", e.to_string());
             Err(Error::new("500"))
