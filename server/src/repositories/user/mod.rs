@@ -6,7 +6,7 @@ pub mod find_many;
 pub mod find_one;
 pub mod update;
 
-use crate::entities;
+use crate::entities::user::Model as UserModel;
 use async_graphql::SimpleObject;
 
 #[derive(SimpleObject)]
@@ -20,8 +20,8 @@ pub struct GraphQLUser {
     pub email: String,
 }
 
-impl From<entities::user::Model> for GraphQLUser {
-    fn from(value: entities::user::Model) -> Self {
+impl From<UserModel> for GraphQLUser {
+    fn from(value: UserModel) -> Self {
         GraphQLUser {
             created_at: value.created_at.timestamp(),
             updated_at: value.updated_at.timestamp(),
