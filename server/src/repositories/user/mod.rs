@@ -12,7 +12,7 @@ use async_graphql::SimpleObject;
 #[derive(SimpleObject)]
 #[cfg_attr(test, derive(PartialEq, Debug))]
 pub struct GraphQLUser {
-    pub id: i32,
+    pub id: String,
     pub created_at: i64,
     pub updated_at: i64,
     pub first_name: String,
