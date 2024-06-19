@@ -1,5 +1,6 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, PaginatorTrait, QueryOrder};
+use tracing::error;
 
 use crate::entities::{prelude::User, user};
 
@@ -18,8 +19,6 @@ pub async fn find_users(
     db: &DatabaseConnection,
     input: FindUsersInput,
 ) -> Result<Vec<GraphQLUser>> {
-    // Offset based pagination. This is better for accessing specific page of content.
-
     // Page size cannot be 0
     let page_size;
     if input.limit < 1 {
@@ -28,7 +27,6 @@ pub async fn find_users(
         page_size = input.limit
     }
 
-    // Offset based pagination
     let user_pages = User::find()
         .order_by_asc(user::Column::FirstName)
         .paginate(db, page_size);
@@ -38,17 +36,10 @@ pub async fn find_users(
     match results {
         Ok(users) => Ok(users.into_iter().map(|user| user.into()).collect()),
         Err(e) => {
-            tracing::error!("Source: Find many users. Message: {}", e.to_string());
+            error!("User -> Find Many: {}", e.to_string());
             Err(Error::new("500"))
         }
     }
-
-    // let mut cursor = user::Entity::find().cursor_by(user::Column::FirstName);
-    // if let Some(after) = input.after {
-    //     cursor.after(after);
-    // }
-    // let results = cursor.first(input.limit).all(db).await?;
-    // Ok(results.into_iter().map(|user| user.into()).collect())
 }
 
 #[cfg(test)]
