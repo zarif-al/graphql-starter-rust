@@ -1,11 +1,12 @@
 use crate::entities::user::Model;
 use crate::entities::user::{self};
-use chrono::Utc;
 
+use chrono::Utc;
 use fake::faker::internet::raw::SafeEmail;
 use fake::faker::name::raw::*;
 use fake::locales::*;
 use fake::Fake;
+use uuid::Uuid;
 
 use super::{create::CreateUserInput, GraphQLUser};
 
@@ -19,7 +20,7 @@ pub fn get_mock_create_user_input() -> CreateUserInput {
 
 pub fn get_mock_user_model(input: CreateUserInput) -> user::Model {
     user::Model {
-        id: 1,
+        id: Uuid::new_v4().to_string(),
         first_name: input.first_name,
         last_name: input.last_name,
         email: input.email,
