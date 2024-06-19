@@ -15,12 +15,6 @@ pub struct UpdateUserInput {
 }
 
 pub async fn update_user(db: &DatabaseConnection, input: UpdateUserInput) -> Result<GraphQLUser> {
-    // TODO: Check if inputs can be SOME and EMPTY
-    // Validate inputs
-    if input.first_name.is_none() && input.last_name.is_none() && input.email.is_none() {
-        return Err(Error::new("I100"));
-    }
-
     // Get user model
     let result = User::find_by_id(input.id).one(db).await;
 
@@ -33,12 +27,16 @@ pub async fn update_user(db: &DatabaseConnection, input: UpdateUserInput) -> Res
     if let Ok(Some(user)) = result {
         let mut user: ActiveModel = user.into();
 
-        if let Some(first_name) = input.first_name {
+        if let Some(first_name) = input.first_name.filter(|s| !s.is_empty()) {
             user.first_name = Set(first_name);
         }
 
-        if let Some(last_name) = input.last_name {
+        if let Some(last_name) = input.last_name.filter(|s| !s.is_empty()) {
             user.last_name = Set(last_name);
+        }
+
+        if let Some(email) = input.email.filter(|s| !s.is_empty()) {
+            user.email = Set(email);
         }
 
         let update_result = user.update(db).await;
