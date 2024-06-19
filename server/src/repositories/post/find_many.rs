@@ -3,6 +3,7 @@ use async_graphql::{Error, InputObject, Result};
 use sea_orm::{
     ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
 };
+use tracing::error;
 
 use super::GraphQLPost;
 
@@ -37,7 +38,7 @@ pub async fn find_user_posts(
     match results {
         Ok(posts) => Ok(posts.into_iter().map(|(post, _)| post.into()).collect()),
         Err(e) => {
-            tracing::error!("Source: Find user posts. Message: {}", e.to_string());
+            error!("Post -> Find User Posts: {}", e.to_string());
             Err(Error::new("500"))
         }
     }

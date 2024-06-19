@@ -1,5 +1,6 @@
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait};
+use tracing::error;
 
 use crate::entities::prelude::Post;
 
@@ -22,7 +23,7 @@ pub async fn find_post(
             None => Ok(None),
         },
         Err(e) => {
-            tracing::error!("Source: Find post. Message: {}", e.to_string());
+            error!("Post -> Find Post: {}", e.to_string());
             Err(Error::new("500"))
         }
     }

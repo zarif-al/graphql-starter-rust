@@ -1,6 +1,7 @@
 use crate::entities::{post, prelude::User, user};
 use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};
+use tracing::error;
 
 use super::GraphQLPost;
 
@@ -37,7 +38,7 @@ pub async fn create_post(db: &DatabaseConnection, input: CreatePostInput) -> Res
                 return Ok(post_model.into());
             }
             Err(e) => {
-                tracing::error!("Source: Create Post. Message: {}", e.to_string());
+                error!("Post -> Create: {}", e.to_string());
                 return Err(Error::new("500"));
             }
         }
