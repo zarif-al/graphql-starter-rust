@@ -7,6 +7,8 @@ This workspace contains the necesary crates to get a postgeSQL, graphQL backend 
 The goal of this repository is to act as a template for starting Rust based graphQL projects.
 
 This workspace currently has three crates, you can checkout their readme to learn more about them:
+* [**DB**](/db/Readme.md)
+* [**Entity**](/entity/Readme.md)
 * [**Migration**](/migration/README.md)
 * [**Seeder**](/seeder/Readme.md)
 * [**Server**](/server/Readme.md)
