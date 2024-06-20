@@ -1,3 +1,4 @@
+use db::get_db_connection;
 use entity::definitions::user::{self, ActiveModel};
 use fake::faker::internet::raw::SafeEmail;
 use fake::faker::name::raw::*;
@@ -6,7 +7,6 @@ use fake::Fake;
 use sea_orm::DbErr;
 use sea_orm::Set;
 use sea_orm::{ActiveModelTrait, TransactionTrait};
-use server::misc::get_db_connection;
 use tracing::info;
 use uuid::Uuid;
 
