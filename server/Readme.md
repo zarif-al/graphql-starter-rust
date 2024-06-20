@@ -1,9 +1,19 @@
+<!-- omit in toc -->
 # Server
 This crate makes use of the following dependency crates:
 - [Axum](https://docs.rs/axum/latest/axum/): Build and run the server.
 - [Async-GraphQL](https://async-graphql.github.io/async-graphql/en/introduction.html): GraphQL library.
 - [Tracing](https://crates.io/crates/tracing): Logging Solution.
 - [SeaORM](https://www.sea-ql.org/SeaORM/docs/index/): Database ORM.
+
+<!-- omit in toc -->
+# Table of Contents
+- [Modules](#modules)
+	- [GraphQL](#graphql)
+		- [Repositories](#repositories)
+- [Testing](#testing)
+- [Error Codes](#error-codes)
+
 
 ## Modules
 

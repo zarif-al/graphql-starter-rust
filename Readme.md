@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # Rust GraphQL Starter
 
 This workspace contains the necesary crates to get a postgeSQL, graphQL backend server up and running. This is created using [async-graphl](https://github.com/async-graphql/async-graphql/blob/master/README.md), [sea-orm](https://www.sea-ql.org/SeaORM/docs/index/) and [axum](https://github.com/tokio-rs/axum/blob/main/axum/README.md).
@@ -13,9 +14,18 @@ This workspace currently has three crates, you can checkout their readme to lear
 * [**Seeder**](/seeder/Readme.md)
 * [**Server**](/server/Readme.md)
 
-## Getting Started
+<!-- omit in toc -->
+# Table of Contents
+- [Getting Started](#getting-started)
+  - [Pre-requisites](#pre-requisites)
+  - [Running](#running)
+- [Logging](#logging)
+- [Deployment](#deployment)
 
-### Pre-requisites
+
+# Getting Started
+
+## Pre-requisites
 * Install `Rust`. You can check it out [here](https://www.rust-lang.org/tools/install).
 
 * Install postgreSQL from [here](https://www.postgresql.org/download/).
@@ -38,7 +48,7 @@ This workspace currently has three crates, you can checkout their readme to lear
   cargo run -p seeder
   ```
 
-### Running
+## Running
 You can run this application by using cargo or docker.
 
 For cargo, you can use `cargo run -p server`.
@@ -48,7 +58,7 @@ For docker, you can use `docker compose up --build`.
 
 Your application will be available at `http://localhost:{PORT}`.
 
-## Logging
+# Logging
 
 All the crates in this project use `Tracing` and `Tracing_Subscriber` for logging purposes.
 
@@ -57,7 +67,7 @@ SeaORM also implements `Tracing` as it's logger. This creates an issue of ending
 To learn more about `with_env_filter` please see this doc [Tracing Subscriber::EnvFilter](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)
 
 
-## Deployment
+# Deployment
 This application can be deployed on any machine that can run a docker image. You can follow these steps to deploy this project:
 
 * Create a `.env` & a `.docker.env` file from the `.sample.env` & `.sample.docker.env` files respectively.
