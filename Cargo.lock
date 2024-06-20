@@ -878,6 +878,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e962a19be5cfc3f3bf6dd8f61eb50107f356ad6270fbb3ed41476571db78be5"
 
 [[package]]
+name = "db"
+version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "sea-orm",
+]
+
+[[package]]
 name = "der"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1651,9 +1659,9 @@ name = "migration"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "db",
  "dotenv",
  "sea-orm-migration",
- "server",
 ]
 
 [[package]]
@@ -2585,6 +2593,7 @@ version = "0.1.0"
 dependencies = [
  "async-std",
  "chrono",
+ "db",
  "dotenv",
  "entity",
  "fake",
@@ -2593,7 +2602,6 @@ dependencies = [
  "sea-orm-migration",
  "serde",
  "serde_json",
- "server",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -2662,6 +2670,7 @@ dependencies = [
  "async-std",
  "axum",
  "chrono",
+ "db",
  "dotenv",
  "entity",
  "fake",

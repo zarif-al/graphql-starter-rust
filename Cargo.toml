@@ -1,3 +1,3 @@
 [workspace]
-members = ["server", "migration", "seeder", "entity"]
+members = ["server", "migration", "seeder", "entity", "db"]
 resolver = "2"
