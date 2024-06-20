@@ -4,8 +4,8 @@ pub mod find_many;
 pub mod find_one;
 pub mod update;
 
-use crate::entities::post::Model as PostModel;
 use async_graphql::SimpleObject;
+use entity::definitions::post::Model as PostModel;
 
 #[derive(SimpleObject)]
 #[cfg_attr(test, derive(PartialEq, Debug))]

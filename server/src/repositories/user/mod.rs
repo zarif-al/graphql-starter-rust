@@ -6,7 +6,8 @@ pub mod find_many;
 pub mod find_one;
 pub mod update;
 
-use crate::entities::user::Model as UserModel;
+use entity::definitions::user::Model as UserModel;
+
 use async_graphql::SimpleObject;
 
 #[derive(SimpleObject)]

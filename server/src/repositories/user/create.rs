@@ -3,7 +3,7 @@ use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 use tracing::error;
 use uuid::Uuid;
 
-use crate::entities::user::{self};
+use entity::definitions::user;
 
 use super::GraphQLUser;
 
@@ -42,11 +42,11 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUserInput) -> Res
 #[cfg(test)]
 mod tests {
     use super::create_user;
-    use crate::entities::user::Model;
     use crate::repositories::user::GraphQLUser;
     use crate::repositories::user::_mock::get_mock_create_user_input;
     use crate::repositories::user::_mock::get_mock_graphql_user;
     use crate::repositories::user::_mock::get_mock_user_model;
+    use entity::definitions::user::Model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;
     use sea_orm::{DatabaseBackend, MockDatabase};

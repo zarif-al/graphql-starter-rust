@@ -2,7 +2,7 @@ use async_graphql::{Error, InputObject, Result};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use tracing::error;
 
-use crate::entities::user::{self, Entity as User};
+use entity::definitions::user::{self, Entity as User};
 
 use super::GraphQLUser;
 
@@ -35,11 +35,11 @@ pub async fn find_user_by_email(
 #[cfg(test)]
 mod tests {
     use super::{find_user_by_email, FindUserInput};
-    use crate::entities::user::Model;
     use crate::repositories::user::GraphQLUser;
     use crate::repositories::user::_mock::get_mock_create_user_input;
     use crate::repositories::user::_mock::get_mock_graphql_user;
     use crate::repositories::user::_mock::get_mock_user_model;
+    use entity::definitions::user::Model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;
     use sea_orm::{DatabaseBackend, MockDatabase};

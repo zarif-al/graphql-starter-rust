@@ -2,7 +2,7 @@ use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 use tracing::error;
 
-use crate::entities::prelude::User;
+use entity::definitions::prelude::User;
 
 #[derive(InputObject)]
 pub struct DeleteUserInput {

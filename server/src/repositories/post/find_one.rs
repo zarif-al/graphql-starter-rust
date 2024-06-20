@@ -2,7 +2,7 @@ use async_graphql::{Error, InputObject, Result};
 use sea_orm::{DatabaseConnection, EntityTrait};
 use tracing::error;
 
-use crate::entities::prelude::Post;
+use entity::definitions::prelude::Post;
 
 use super::GraphQLPost;
 

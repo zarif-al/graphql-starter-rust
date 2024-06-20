@@ -1,5 +1,4 @@
-use crate::entities::user::Model;
-use crate::entities::user::{self};
+use entity::definitions::user::{self, Model};
 
 use chrono::Utc;
 use fake::faker::internet::raw::SafeEmail;
