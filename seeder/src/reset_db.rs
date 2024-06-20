@@ -1,6 +1,5 @@
 use db::get_db_connection;
-use migration::Migrator;
-use sea_orm_migration::prelude::*;
+use migration::{DbErr, Migrator, MigratorTrait};
 
 pub async fn reset_database() -> Result<(), DbErr> {
     let db = get_db_connection().await;
