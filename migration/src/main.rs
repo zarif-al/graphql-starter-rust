@@ -3,7 +3,7 @@ use std::io;
 use dotenv::dotenv;
 use migration::MigratorTrait;
 
-use server::misc::get_db_connection;
+use db::get_db_connection;
 
 #[async_std::main]
 async fn main() {
