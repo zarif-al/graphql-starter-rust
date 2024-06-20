@@ -10,7 +10,6 @@ use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tracing::info;
 
-mod general_response;
 mod graphql;
 mod repositories;
 

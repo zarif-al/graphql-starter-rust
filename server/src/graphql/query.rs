@@ -1,21 +1,18 @@
-use async_graphql::{Context, Error, Json, Object, Result};
-use sea_orm::DatabaseConnection;
-
-use crate::{
-    general_response::GeneralResponse,
-    repositories::{
-        post::{
-            find_many::{find_user_posts, FindUserPostsInput},
-            find_one::{find_post, FindPostInput},
-            GraphQLPost,
-        },
-        user::{
-            find_many::{find_users, FindUsersInput},
-            find_one::{find_user_by_email, FindUserInput},
-            GraphQLUser,
-        },
+use super::misc::general_response::GeneralResponse;
+use crate::repositories::{
+    post::{
+        find_many::{find_user_posts, FindUserPostsInput},
+        find_one::{find_post, FindPostInput},
+        GraphQLPost,
+    },
+    user::{
+        find_many::{find_users, FindUsersInput},
+        find_one::{find_user_by_email, FindUserInput},
+        GraphQLUser,
     },
 };
+use async_graphql::{Context, Error, Json, Object, Result};
+use sea_orm::DatabaseConnection;
 
 pub struct QueryRoot;
 
