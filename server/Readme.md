@@ -45,7 +45,7 @@ The GraphQL struct will also need to implement a `From trait` to convert the ent
 
 We call the structs `GraphQL<entity-name>`, i.e `GraphQLUser`.
 
-You can checkout the [user](/src/repositories/user/mod.rs) module in repositories to learn more.
+You can checkout the [user](/src/grapqhl/repositories/user/mod.rs) module in repositories to learn more.
 
 ## Testing
 
