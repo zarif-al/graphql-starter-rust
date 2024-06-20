@@ -1,5 +1,5 @@
 use super::misc::general_response::GeneralResponse;
-use crate::repositories::{
+use crate::graphql::repositories::{
     post::{
         find_many::{find_user_posts, FindUserPostsInput},
         find_one::{find_post, FindPostInput},

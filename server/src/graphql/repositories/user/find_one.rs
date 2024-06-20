@@ -35,10 +35,10 @@ pub async fn find_user_by_email(
 #[cfg(test)]
 mod tests {
     use super::{find_user_by_email, FindUserInput};
-    use crate::repositories::user::GraphQLUser;
-    use crate::repositories::user::_mock::get_mock_create_user_input;
-    use crate::repositories::user::_mock::get_mock_graphql_user;
-    use crate::repositories::user::_mock::get_mock_user_model;
+    use crate::graphql::repositories::user::GraphQLUser;
+    use crate::graphql::repositories::user::_mock::get_mock_create_user_input;
+    use crate::graphql::repositories::user::_mock::get_mock_graphql_user;
+    use crate::graphql::repositories::user::_mock::get_mock_user_model;
     use entity::definitions::user::Model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;

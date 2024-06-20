@@ -42,10 +42,10 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUserInput) -> Res
 #[cfg(test)]
 mod tests {
     use super::create_user;
-    use crate::repositories::user::GraphQLUser;
-    use crate::repositories::user::_mock::get_mock_create_user_input;
-    use crate::repositories::user::_mock::get_mock_graphql_user;
-    use crate::repositories::user::_mock::get_mock_user_model;
+    use crate::graphql::repositories::user::GraphQLUser;
+    use crate::graphql::repositories::user::_mock::get_mock_create_user_input;
+    use crate::graphql::repositories::user::_mock::get_mock_graphql_user;
+    use crate::graphql::repositories::user::_mock::get_mock_user_model;
     use entity::definitions::user::Model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;

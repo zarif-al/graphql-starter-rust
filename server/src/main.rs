@@ -11,7 +11,6 @@ use tokio::net::TcpListener;
 use tracing::info;
 
 mod graphql;
-mod repositories;
 
 use graphql::{mutation::MutationRoot, query::QueryRoot};
 

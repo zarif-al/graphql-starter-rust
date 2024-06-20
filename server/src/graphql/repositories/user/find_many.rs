@@ -45,8 +45,8 @@ pub async fn find_users(
 #[cfg(test)]
 mod tests {
     use super::{find_users, FindUsersInput};
-    use crate::repositories::user::_mock::get_mock_create_user_input;
-    use crate::repositories::user::_mock::get_mock_user_model;
+    use crate::graphql::repositories::user::_mock::get_mock_create_user_input;
+    use crate::graphql::repositories::user::_mock::get_mock_user_model;
     use entity::definitions::user::Model;
     use sea_orm::DbErr;
     use sea_orm::Transaction;

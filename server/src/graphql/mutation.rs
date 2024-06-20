@@ -1,7 +1,7 @@
 use async_graphql::{Context, Error, Object, Result};
 use sea_orm::DatabaseConnection;
 
-use crate::repositories::{
+use crate::graphql::repositories::{
     post::{
         create::{create_post, CreatePostInput},
         delete::{delete_post, DeletePostInput},
