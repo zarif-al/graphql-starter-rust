@@ -2,7 +2,7 @@ use async_graphql::{Context, Error, Json, Object, Result};
 use sea_orm::DatabaseConnection;
 
 use crate::{
-    misc::responses::GeneralResponse,
+    general_response::GeneralResponse,
     repositories::{
         post::{
             find_many::{find_user_posts, FindUserPostsInput},
