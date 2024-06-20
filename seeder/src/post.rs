@@ -1,8 +1,8 @@
+use entity::definitions::post::{self, ActiveModel};
+use entity::definitions::user::ActiveModel as UserActiveModel;
 use fake::faker::lorem::en::Paragraph;
 use fake::Fake;
 use sea_orm::{ActiveModelTrait, DbErr, Set, TransactionTrait};
-use server::entities::post::{self, ActiveModel};
-use server::entities::user::ActiveModel as UserActiveModel;
 use server::misc::get_db_connection;
 use tracing::info;
 use uuid::Uuid;
