@@ -1646,6 +1646,7 @@ dependencies = [
  "async-std",
  "dotenv",
  "sea-orm-migration",
+ "server",
 ]
 
 [[package]]
