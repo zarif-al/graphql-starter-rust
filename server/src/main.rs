@@ -10,14 +10,13 @@ use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tracing::info;
 
+mod general_response;
 mod graphql;
-mod misc;
 mod repositories;
 
 use graphql::{mutation::MutationRoot, query::QueryRoot};
-use misc::env::get_env;
 
-use crate::misc::get_db_connection;
+use db::{env::get_env, get_db_connection};
 
 /// GraphQL Playground
 async fn graphiql() -> impl IntoResponse {
