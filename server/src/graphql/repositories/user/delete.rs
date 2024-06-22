@@ -3,10 +3,11 @@ use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 use tracing::error;
 
 use entity::definitions::prelude::User;
+use uuid::Uuid;
 
 #[derive(InputObject)]
 pub struct DeleteUserInput {
-    id: String,
+    id: Uuid,
 }
 
 pub async fn delete_user(db: &DatabaseConnection, input: DeleteUserInput) -> Result<bool> {

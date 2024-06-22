@@ -19,7 +19,7 @@ pub fn get_mock_create_user_input() -> CreateUserInput {
 
 pub fn get_mock_user_model(input: CreateUserInput) -> user::Model {
     user::Model {
-        id: Uuid::new_v4().to_string(),
+        id: Uuid::new_v4(),
         first_name: input.first_name,
         last_name: input.last_name,
         email: input.email,

@@ -21,7 +21,7 @@ pub async fn create_user(db: &DatabaseConnection, input: CreateUserInput) -> Res
     }
 
     let new_user = user::ActiveModel {
-        id: ActiveValue::Set(Uuid::new_v4().to_string()),
+        id: ActiveValue::Set(Uuid::new_v4()),
         first_name: ActiveValue::Set(input.first_name),
         last_name: ActiveValue::Set(input.last_name),
         email: ActiveValue::Set(input.email),

@@ -9,11 +9,12 @@ pub mod update;
 use entity::definitions::user::Model as UserModel;
 
 use async_graphql::SimpleObject;
+use uuid::Uuid;
 
 #[derive(SimpleObject)]
 #[cfg_attr(test, derive(PartialEq, Debug))]
 pub struct GraphQLUser {
-    pub id: String,
+    pub id: Uuid,
     pub created_at: i64,
     pub updated_at: i64,
     pub first_name: String,

@@ -3,12 +3,13 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use tracing::error;
 
 use entity::definitions::{prelude::User, user::ActiveModel};
+use uuid::Uuid;
 
 use super::GraphQLUser;
 
 #[derive(InputObject)]
 pub struct UpdateUserInput {
-    id: String,
+    id: Uuid,
     first_name: Option<String>,
     last_name: Option<String>,
     email: Option<String>,
