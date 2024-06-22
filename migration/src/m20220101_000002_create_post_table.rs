@@ -18,12 +18,7 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(Post::Table)
-                    .col(
-                        ColumnDef::new(Post::Id)
-                            .char_len(36)
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Post::Id).uuid().not_null().primary_key())
                     .col(
                         ColumnDef::new(Post::CreatedAt)
                             .timestamp_with_time_zone()
@@ -36,7 +31,7 @@ impl MigrationTrait for Migration {
                             .default(Expr::current_timestamp())
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Post::UserId).char_len(36).not_null())
+                    .col(ColumnDef::new(Post::UserId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-post-user_id")

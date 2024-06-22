@@ -16,12 +16,7 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(User::Table)
-                    .col(
-                        ColumnDef::new(User::Id)
-                            .char_len(36)
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(User::Id).uuid().not_null().primary_key())
                     .col(
                         ColumnDef::new(User::CreatedAt)
                             .timestamp_with_time_zone()
