@@ -68,18 +68,18 @@ impl MigrationTrait for Migration {
     }
 }
 
-#[derive(Iden)]
+#[derive(DeriveIden)]
 pub enum User {
     Table,
-    #[iden = "id"]
+    #[sea_orm(iden = "id")]
     Id,
-    #[iden = "created_at"]
+    #[sea_orm(iden = "created_at")]
     CreatedAt,
-    #[iden = "updated_at"]
+    #[sea_orm(iden = "updated_at")]
     UpdatedAt,
-    #[iden = "first_name"]
+    #[sea_orm(iden = "first_name")]
     FirstName,
-    #[iden = "last_name"]
+    #[sea_orm(iden = "last_name")]
     LastName,
     Email,
 }

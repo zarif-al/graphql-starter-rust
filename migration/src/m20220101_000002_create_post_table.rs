@@ -52,17 +52,17 @@ impl MigrationTrait for Migration {
     }
 }
 
-#[derive(Iden)]
+#[derive(DeriveIden)]
 pub enum Post {
     Table,
-    #[iden = "id"]
+    #[sea_orm(iden = "id")]
     Id,
-    #[iden = "created_at"]
+    #[sea_orm(iden = "created_at")]
     CreatedAt,
-    #[iden = "updated_at"]
+    #[sea_orm(iden = "updated_at")]
     UpdatedAt,
-    #[iden = "user_id"]
+    #[sea_orm(iden = "user_id")]
     UserId,
-    #[iden = "content"]
+    #[sea_orm(iden = "content")]
     Content,
 }
