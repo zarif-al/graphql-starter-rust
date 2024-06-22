@@ -18,7 +18,7 @@ pub fn generate_users_seed(num: usize) -> Vec<ActiveModel> {
             first_name: Set(FirstName(EN).fake()),
             last_name: Set(LastName(EN).fake()),
             email: Set(SafeEmail(EN).fake()),
-            id: Set(Uuid::new_v4().to_string()),
+            id: Set(Uuid::new_v4()),
             ..Default::default()
         });
         i += 1;

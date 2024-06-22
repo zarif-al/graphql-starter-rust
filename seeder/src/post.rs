@@ -20,7 +20,7 @@ pub fn generate_posts_seed(num: usize, users: Vec<UserActiveModel>) -> Vec<Activ
             posts_seed.push(post::ActiveModel {
                 content: Set(Paragraph(1..2).fake()),
                 user_id: Set(user.id.clone().unwrap()),
-                id: Set(Uuid::new_v4().to_string()),
+                id: Set(Uuid::new_v4()),
                 ..Default::default()
             });
             i += 1;
