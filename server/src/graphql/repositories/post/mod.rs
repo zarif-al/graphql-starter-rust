@@ -6,15 +6,16 @@ pub mod update;
 
 use async_graphql::SimpleObject;
 use entity::definitions::post::Model as PostModel;
+use uuid::Uuid;
 
 #[derive(SimpleObject)]
 #[cfg_attr(test, derive(PartialEq, Debug))]
 pub struct GraphQLPost {
-    pub id: String,
+    pub id: Uuid,
     pub created_at: i64,
     pub updated_at: i64,
     pub content: String,
-    pub user_id: String,
+    pub user_id: Uuid,
 }
 
 impl From<PostModel> for GraphQLPost {

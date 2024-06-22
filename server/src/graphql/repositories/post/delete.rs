@@ -2,10 +2,11 @@ use async_graphql::{Error, InputObject, Result};
 use entity::definitions::prelude::{Post, User};
 use sea_orm::{DatabaseConnection, EntityTrait, ModelTrait};
 use tracing::error;
+use uuid::Uuid;
 
 #[derive(InputObject)]
 pub struct DeletePostInput {
-    id: String,
+    id: Uuid,
     user_email: String,
 }
 

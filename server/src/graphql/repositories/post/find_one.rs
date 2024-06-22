@@ -3,12 +3,13 @@ use sea_orm::{DatabaseConnection, EntityTrait};
 use tracing::error;
 
 use entity::definitions::prelude::Post;
+use uuid::Uuid;
 
 use super::GraphQLPost;
 
 #[derive(InputObject)]
 pub struct FindPostInput {
-    id: String,
+    id: Uuid,
 }
 
 pub async fn find_post(
